@@ -5,6 +5,25 @@ import pandas as pd
 import weo
 import wbgapi as wb
 
+
+
+def add_flourish_geometries(df: pd.DataFrame, key_column_name:str) -> pd.DataFrame:
+    """
+    Adds a geometry column to a dataframe based on iso3 code
+    key_column_name: name of column with iso3 codes to merge on
+    """
+
+    g = pd.read_json(f'{config.paths.glossaries}/flourish_geometries_world.json')
+    g = (g
+         .rename(columns={g.columns[0]: "flourish_geom", g.columns[1]: key_column_name})
+         .iloc[1:]
+         .drop_duplicates(subset=key_column_name, keep="first")
+         .reset_index(drop=True))
+
+    return pd.merge(g, df, on = key_column_name, how='left')
+
+
+
 # ===============================================
 # IMF
 # ===============================================
@@ -60,7 +79,7 @@ def __clean_weo(df: pd.DataFrame) -> pd.DataFrame:
 
 def get_gdp(gdp_year: int = GDP_YEAR) -> dict:
     """
-    Retrieves gdp value for a specific year
+    Retrieves gdp values for a specific year
     """
 
     # Read the weo data
@@ -84,6 +103,23 @@ def add_gdp(df: pd.DataFrame, gdp_year:int = GDP_YEAR, iso_codes_col: str = "iso
 
     gdp: dict = get_gdp(gdp_year)
     return df.assign(gdp=lambda d: d[iso_codes_col].map(gdp))
+
+
+def get_gdppc(gdp_year: int = GDP_YEAR) -> dict:
+    """retrieves gdp per capita values for a given year NGDPDPC"""
+
+    df = weo.WEO(f"{config.paths.raw_data}/weo_{WEO_YEAR}_{WEO_RELEASE}.csv").df
+
+    df = df.pipe(__clean_weo).loc[lambda d: (d.indicator == 'NGDPDPC')&(d.year == gdp_year), ['iso_code', 'value']].set_index("iso_code")["value"].to_dict()
+    #df = df.loc[(df.indicator == 'NGDPDPC')&(df.year == gdp_year), ['iso_code', 'value']
+
+    return df
+
+def add_gdppc(df: pd.DataFrame, gdp_year:int = GDP_YEAR, iso_codes_col: str = "iso_code") -> pd.DataFrame:
+    """ """
+
+    gdppc: dict = get_gdppc(gdp_year)
+    return df.assign(gdppc=lambda d: d[iso_codes_col].map(gdppc))
 
 
 # =============================================================================

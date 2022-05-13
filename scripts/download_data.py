@@ -2,6 +2,7 @@
 
 import pandas as pd
 from typing import Optional
+from scripts import utils
 
 # ====================================================
 #Our World In Data - CO2 and Greenhouse gas emissions
@@ -26,6 +27,8 @@ def get_owid(indicators: Optional[list] = None):
 
     else:
         return df
+
+
 
 
 
