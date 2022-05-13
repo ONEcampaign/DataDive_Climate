@@ -6,7 +6,6 @@ import weo
 import wbgapi as wb
 
 
-
 def add_flourish_geometries(df: pd.DataFrame, key_column_name:str) -> pd.DataFrame:
     """
     Adds a geometry column to a dataframe based on iso3 code
@@ -76,26 +75,39 @@ def __clean_weo(df: pd.DataFrame) -> pd.DataFrame:
             .assign(value=lambda d: pd.to_numeric(d.value, errors="coerce"))
     )
 
+def weo_to_dict(indicator: str, target_year: int = 2022, *, min_year: int = 2018) -> dict:
+    """
+    downloads weo data and returns a dictionary for a specific indicator and target year
+    if target year value is null, the latest available year with data is used
+    min year: earliest year acceptable to return a value
+    """
+
+    df = weo.WEO(f"{config.paths.raw_data}/weo_{WEO_YEAR}_{WEO_RELEASE}.csv").df
+
+    df = (df
+          .pipe(__clean_weo)
+          .dropna(subset = ['value'])
+          .loc[lambda d: (d.indicator == indicator)&(d.year>=min_year)&(d.year<=target_year),["iso_code", "year","value"]]
+          .reset_index(drop=True)
+          )
+
+    return (df.loc[df.groupby(['iso_code'])['year'].transform(max) == df['year']]
+            .set_index("iso_code")["value"]
+            .to_dict()
+            )
+
+
 
 def get_gdp(gdp_year: int = GDP_YEAR) -> dict:
     """
     Retrieves gdp values for a specific year
     """
 
-    # Read the weo data
-    df = weo.WEO(f"{config.paths.raw_data}/weo_{WEO_YEAR}_{WEO_RELEASE}.csv").df
+    gdp = weo_to_dict(indicator = "NGDPD", target_year=gdp_year)
+    for i in gdp.keys():
+        gdp[i] = gdp[i]*1e9
 
-    # Clean the weo data. Filter for GDP, convert to USD. Return as dictionary
-    return (
-        df.pipe(__clean_weo)
-            .loc[
-            lambda d: (d.indicator == "NGDPD") & (d.year == gdp_year),
-            ["iso_code", "value"],
-        ]
-            .assign(gdp=lambda d: d.value * 1e9)
-            .set_index("iso_code")["gdp"]
-            .to_dict()
-    )
+    return gdp
 
 
 def add_gdp(df: pd.DataFrame, gdp_year:int = GDP_YEAR, iso_codes_col: str = "iso_code") -> pd.DataFrame:
@@ -106,17 +118,13 @@ def add_gdp(df: pd.DataFrame, gdp_year:int = GDP_YEAR, iso_codes_col: str = "iso
 
 
 def get_gdppc(gdp_year: int = GDP_YEAR) -> dict:
-    """retrieves gdp per capita values for a given year NGDPDPC"""
+    """retrieves gdp per capita values for a given year"""
 
-    df = weo.WEO(f"{config.paths.raw_data}/weo_{WEO_YEAR}_{WEO_RELEASE}.csv").df
+    return weo_to_dict(indicator = 'NGDPDPC', target_year=gdp_year)
 
-    df = df.pipe(__clean_weo).loc[lambda d: (d.indicator == 'NGDPDPC')&(d.year == gdp_year), ['iso_code', 'value']].set_index("iso_code")["value"].to_dict()
-    #df = df.loc[(df.indicator == 'NGDPDPC')&(df.year == gdp_year), ['iso_code', 'value']
-
-    return df
 
 def add_gdppc(df: pd.DataFrame, gdp_year:int = GDP_YEAR, iso_codes_col: str = "iso_code") -> pd.DataFrame:
-    """ """
+    """adds gdp per capita to a dataframe"""
 
     gdppc: dict = get_gdppc(gdp_year)
     return df.assign(gdppc=lambda d: d[iso_codes_col].map(gdppc))
