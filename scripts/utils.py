@@ -1,38 +1,165 @@
 """Utility functions"""
 
 from scripts import config
+import wbgapi as wb
 import pandas as pd
 import weo
-import wbgapi as wb
+import country_converter as coco
 
 
-def add_flourish_geometries(df: pd.DataFrame, key_column_name:str) -> pd.DataFrame:
+def add_flourish_geometries(
+        df: pd.DataFrame, key_column_name: str = "iso_code"
+) -> pd.DataFrame:
     """
     Adds a geometry column to a dataframe based on iso3 code
-    key_column_name: name of column with iso3 codes to merge on
+        df: DataFrame to add a column
+        key_column_name: name of column with iso3 codes to merge on, default = 'iso_code'
     """
 
-    g = pd.read_json(f'{config.paths.glossaries}/flourish_geometries_world.json')
-    g = (g
-         .rename(columns={g.columns[0]: "flourish_geom", g.columns[1]: key_column_name})
-         .iloc[1:]
-         .drop_duplicates(subset=key_column_name, keep="first")
-         .reset_index(drop=True))
+    g = pd.read_json(f"{config.paths.glossaries}/flourish_geometries_world.json")
+    g = (
+        g.rename(columns={g.columns[0]: "flourish_geom", g.columns[1]: key_column_name})
+            .iloc[1:]
+            .drop_duplicates(subset=key_column_name, keep="first")
+            .reset_index(drop=True)
+    )
 
-    return pd.merge(g, df, on = key_column_name, how='left')
+    return pd.merge(g, df, on=key_column_name, how="left")
 
 
+def remove_unnamed_cols(df: pd.DataFrame) -> pd.DataFrame:
+    """removes all columns with 'Unnamed'"""
 
-# ===============================================
+    return df.loc[:, ~df.columns.str.contains("Unnamed")]
+
+
+def clean_numeric_column(column: pd.Series) -> pd.Series:
+    """removes commas and transforms pandas series to numeric"""
+
+    column = column.str.replace(",", "")
+    column = pd.to_numeric(column)
+
+    return column
+
+
+def get_latest_values(
+        df: pd.DataFrame, grouping_col: str, date_col: str
+) -> pd.DataFrame:
+    """returns a dataframe with only latest values per group"""
+
+    return df.loc[
+        df.groupby(grouping_col)[date_col].transform(max) == df[date_col]
+        ].reset_index(drop=True)
+
+
+def keep_countries(df: pd.DataFrame, iso_col: str = "iso_code") -> pd.DataFrame:
+    """returns a dataframe with only countries"""
+
+    cc = coco.CountryConverter()
+    return df[df[iso_col].isin(cc.data["ISO3"])].reset_index(drop=True)
+
+
+def filter_countries(
+        df: pd.DataFrame, by: str, values: list = ["Africa"], iso_col: str = "iso_code"
+) -> pd.DataFrame:
+    """
+    returns a filtered dataframe
+        by: filtering category -'continent', UNregion etc.
+        values: list of values to keep
+    """
+
+    cc = coco.CountryConverter()
+    if by not in cc.data.columns:
+        raise ValueError(f"{by} is not valid")
+
+    df[by] = coco.convert(df[iso_col], to=by)
+    return df[df[by].isin(values)].drop(columns=by).reset_index(drop=True)
+
+
+# ============================================================================
+# Income levels
+# ============================================================================
+
+
+def get_income_levels() -> pd.DataFrame:
+    """Downloads fresh version of income levels from WB"""
+    url = "https://databank.worldbank.org/data/download/site-content/CLASS.xlsx"
+
+    df = pd.read_excel(
+        url,
+        sheet_name="List of economies",
+        usecols=["Code", "Income group"],
+        na_values=None,
+    )
+
+    df = df.dropna(subset=["Income group"])
+
+    return df
+
+
+def add_income_levels(df: pd.DataFrame, iso_col: str = "iso_code") -> pd.DataFrame:
+    """Add income levels to a dataframe"""
+
+    income_levels = (
+        get_income_levels().set_index("Code").loc[:, "Income group"].to_dict()
+    )
+    return df.assign(income_level=lambda d: d[iso_col].map(income_levels))
+
+
+# ===================================================
+# World Bank API
+# ===================================================
+
+
+def _download_wb_data(code: str, database: int = 2) -> pd.DataFrame:
+    """
+    Queries indicator from World Bank API
+        default database = 2 (World Development Indicators)
+    """
+
+    try:
+        df = wb.data.DataFrame(
+            series=code, db=database, numericTimeKeys=True, labels=True
+        )
+        return df
+
+    except:
+        raise Exception(f"Could not retieve {code} indicator from World Bank")
+
+
+def _melt_wb_data(df: pd.DataFrame) -> pd.DataFrame:
+    """Melts dataframe extracted from World Bank from wide to "long" format"""
+
+    df = df.reset_index()
+    df = df.melt(id_vars=df.columns[0:2])
+    df.columns = ["iso_code", "country_name", "year", "value"]
+
+    return df
+
+
+def get_wb_indicator(code: str, database: int = 2) -> pd.DataFrame:
+    """
+    Steps to extract and clean an indicator from World Bank
+        code: indicator code
+        database: database number, default = 2 (World Development Indicators)
+    """
+
+    df = _download_wb_data(code, database).pipe(_melt_wb_data)
+    print(f"Successfully extracted {code} from World Bank")
+
+    return df
+
+
+# ==========================================
 # IMF
-# ===============================================
+# ==============================================
 
-WEO_YEAR: int = 2022
-WEO_RELEASE: int = 1
-GDP_YEAR = 2021
+WEO_YEAR = 2022
+WEO_RELEASE = 1
+
 
 def _download_weo(year: int = WEO_YEAR, release: int = WEO_RELEASE) -> None:
-    """Downloads WEO as a csv to glossaries folder as "weo_month_year.csv"""
+    """Downloads WEO as a csv to raw data folder as "weo_month_year.csv"""
 
     try:
         weo.download(
@@ -45,7 +172,7 @@ def _download_weo(year: int = WEO_YEAR, release: int = WEO_RELEASE) -> None:
         raise ConnectionError("Could not download weo data")
 
 
-def __clean_weo(df: pd.DataFrame) -> pd.DataFrame:
+def _clean_weo(df: pd.DataFrame) -> pd.DataFrame:
     """cleans and formats weo dataframe"""
 
     columns = {
@@ -75,137 +202,59 @@ def __clean_weo(df: pd.DataFrame) -> pd.DataFrame:
             .assign(value=lambda d: pd.to_numeric(d.value, errors="coerce"))
     )
 
-def weo_to_dict(indicator: str, target_year: int = 2022, *, min_year: int = 2018) -> dict:
+
+def get_weo_indicator_latest(
+        indicator: str, target_year: int = 2022, *, min_year: int = 2018
+) -> pd.DataFrame:
     """
-    downloads weo data and returns a dictionary for a specific indicator and target year
-    if target year value is null, the latest available year with data is used
-    min year: earliest year acceptable to return a value
+    Retrieves values for an indicator for a target year
     """
 
     df = weo.WEO(f"{config.paths.raw_data}/weo_{WEO_YEAR}_{WEO_RELEASE}.csv").df
 
-    df = (df
-          .pipe(__clean_weo)
-          .dropna(subset = ['value'])
-          .loc[lambda d: (d.indicator == indicator)&(d.year>=min_year)&(d.year<=target_year),["iso_code", "year","value"]]
-          .reset_index(drop=True)
-          )
-
-    return (df.loc[df.groupby(['iso_code'])['year'].transform(max) == df['year']]
-            .set_index("iso_code")["value"]
-            .to_dict()
-            )
-
-
-
-def get_gdp(gdp_year: int = GDP_YEAR) -> dict:
-    """
-    Retrieves gdp values for a specific year
-    """
-
-    gdp = weo_to_dict(indicator = "NGDPD", target_year=gdp_year)
-    for i in gdp.keys():
-        gdp[i] = gdp[i]*1e9
-
-    return gdp
-
-
-def add_gdp(df: pd.DataFrame, gdp_year:int = GDP_YEAR, iso_codes_col: str = "iso_code") -> pd.DataFrame:
-    """adds gdp to a dataframe"""
-
-    gdp: dict = get_gdp(gdp_year)
-    return df.assign(gdp=lambda d: d[iso_codes_col].map(gdp))
-
-
-def get_gdppc(gdp_year: int = GDP_YEAR) -> dict:
-    """retrieves gdp per capita values for a given year"""
-
-    return weo_to_dict(indicator = 'NGDPDPC', target_year=gdp_year)
-
-
-def add_gdppc(df: pd.DataFrame, gdp_year:int = GDP_YEAR, iso_codes_col: str = "iso_code") -> pd.DataFrame:
-    """adds gdp per capita to a dataframe"""
-
-    gdppc: dict = get_gdppc(gdp_year)
-    return df.assign(gdppc=lambda d: d[iso_codes_col].map(gdppc))
-
-
-# =============================================================================
-#  income levels
-# =============================================================================
-
-
-def _download_income_levels() -> None:
-    """Downloads fresh version of income levels from WB"""
-
-    url = "https://databank.worldbank.org/data/download/site-content/CLASS.xlsx"
-
-    df = pd.read_excel(
-        url,
-        sheet_name="List of economies",
-        usecols=["Code", "Income group"],
-        na_values=None,
+    df = (
+        df.pipe(_clean_weo)
+            .dropna(subset=["value"])
+            .loc[
+            lambda d: (d.indicator == indicator)
+                      & (d.year >= min_year)
+                      & (d.year <= target_year),
+            ["iso_code", "year", "value"],
+        ]
+            .reset_index(drop=True)
     )
-
-    df = df.dropna(subset=["Income group"])
-
-    df.to_csv(config.paths.glossaries + r"/income_levels.csv", index=False)
-    print("Downloaded income levels")
-
-
-def get_income_levels() -> dict:
-    """Return income level dictionary"""
-    file = config.paths.glossaries + r"/income_levels.csv"
-    return pd.read_csv(file, na_values=None, index_col="Code")["Income group"].to_dict()
+    return df.loc[
+        df.groupby(["iso_code"])["year"].transform(max) == df["year"],
+        ["iso_code", "value"],
+    ]
 
 
-def add_income_levels(df: pd.DataFrame, iso_codes_col: str = "iso_code") -> pd.DataFrame:
-    """Add income levels to a dataframe"""
-
-    income_levels: dict = get_income_levels()
-    return df.assign(income_level=lambda d: d[iso_codes_col].map(income_levels))
-
-
-# =============================================================================
-#  population
-# =============================================================================
-
-
-def get_wb_indicator(indicator: str) -> pd.DataFrame:
-    """query wb api using a specific indicator code"""
-    try:
-        return wb.data.DataFrame(
-            indicator,
-            mrnev=1,
-            numericTimeKeys=True,
-            labels=False,
-            columns="series",
-            timeColumns=True,
+def get_gdp_latest(per_capita: bool = False, year: int = 2022) -> pd.DataFrame:
+    """
+    return latest gdp values
+        set per_capita = True to return gdp per capita values
+    """
+    if per_capita:
+        return get_weo_indicator_latest(target_year=year, indicator="NGDPDPC")
+    else:
+        return get_weo_indicator_latest(target_year=year, indicator="NGDPD").assign(
+            value=lambda d: d.value * 1e9
         )
-    except ConnectionError:
-        raise ConnectionError(f"Could not retrieve indicator {indicator}")
-
-def wb_indicator_to_dict(df: pd.DataFrame, indicator_col: str):
-    """converts a wb series to a dictionary where keys are iso3 codes and values
-    are indicator values"""
-    return df[indicator_col].astype("int32").to_dict()
 
 
-def update_wb_indicator(id_: str) -> None:
+def add_gdp_latest(
+        df: pd.DataFrame, iso_col: str = "iso_code", per_capita=False, year: int = 2022
+) -> pd.DataFrame:
+    """adds a column with latest gdp values to a dataframe"""
 
-    # get population data
-    get_wb_indicator(id_).to_csv(config.paths.raw_data + rf"/{id_}.csv", index=True)
+    if per_capita:
+        new_col_name = "gdp_per_capita"
+    else:
+        new_col_name = "gdp"
 
+    gdp_df = get_gdp_latest(year=year, per_capita=per_capita)
+    gdp_dict = gdp_df.set_index("iso_code")["value"].to_dict()
 
-def add_population(df: pd.DataFrame, iso_codes_col: str = "iso_code") -> pd.DataFrame:
-    """Adds population to a dataframe"""
+    df[new_col_name] = df[iso_col].map(gdp_dict)
 
-    id_ = "SP.POP.TOTL"
-    pop_: dict = pd.read_csv(
-        config.paths.raw_data + rf"/{id_}.csv", dtype={f"{id_}": float}, index_col=0
-    ).pipe(wb_indicator_to_dict, id_)
-
-    return df.assign(population=lambda d: d[iso_codes_col].map(pop_))
-
-
-
+    return df
