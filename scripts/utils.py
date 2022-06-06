@@ -5,6 +5,23 @@ import wbgapi as wb
 import pandas as pd
 import weo
 import country_converter as coco
+import requests
+from zipfile import ZipFile
+import io
+
+
+def unzip_folder(url) -> ZipFile:
+    """
+    unzips a folder from the web
+    and returns a zipfile object
+    """
+
+    try:
+        response = requests.get(url)
+        folder = ZipFile(io.BytesIO(response.content))
+        return folder
+    except ConnectionError:
+        raise ConnectionError("Could not read file")
 
 
 def add_flourish_geometries(

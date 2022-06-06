@@ -1,3 +1,5 @@
-pandas
-weo
-wbgapi
+pandas~=1.4.1
+weo~=0.7.0
+wbgapi~=1.0.7
+
+requests~=2.27.1

@@ -35,29 +35,31 @@ def get_owid(indicators: Optional[list] = None):
 # Disaster events database
 # ============================================
 
-def get_emdat(*, start_year:Optional[int] = 2000) -> pd.DataFrame:
-    """ """
+climate_events = ['Drought', 'Storm', 'Flood', 'Wildfire', 'Extreme temperature ', 'Insect infestation']
 
-    columns = {'Year':'year', 'Disaster Type':'disaster_type', 'ISO':'iso_code'}
 
-    df = pd.read_excel(f'{config.paths.raw_data}/emdat.xlsx', skiprows=6)
+def _clean_emdat(df:pd.DataFrame, start_year = 1950) -> pd.DataFrame:
+    """Cleaning function for EMDAT"""
+
+    columns = {'Year':'year', 'Disaster Type':'disaster_type', 'ISO':'iso_code', 'Region':'region',
+               'Start Year': 'start_year', 'Start Month': 'start_month', 'Start Day': 'start_day',
+               'End Year': 'end_year', 'End Month': 'end_month', 'End Day': 'end_day', 'Total Affected': 'total_affected'}
 
     df = (df[columns.keys()]
           .rename(columns=columns)
-          .loc[lambda d: (d.disaster_type.isin(['Drought', 'Flood']))&(d.year>=start_year)]
-          .groupby(['iso_code', 'disaster_type'], as_index=False)
-          .agg('count')
-          .pivot(index='iso_code', columns = 'disaster_type', values='year')
-          .reset_index()
-          .fillna(0)
-          .rename(columns = {'Drought':'drought', 'Flood':'flood'})
-          .assign(total = lambda d: d.drought + d.flood)
-          .assign(country = lambda d: coco.convert(d.iso_code, to = 'name_short'))
-          .loc[lambda d: d.country != 'not found'])
+          .loc[lambda d: d.year>=start_year])
 
     return df
 
 
+def get_emdat(*, start_year:Optional[int] = 2000) -> pd.DataFrame:
+    """ """
+
+
+    df = pd.read_excel(f'{config.paths.raw_data}/emdat.xlsx', skiprows=6)
+    df = _clean_emdat(df)
+
+    return df
 
 
 
