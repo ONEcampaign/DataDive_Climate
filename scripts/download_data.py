@@ -4,6 +4,7 @@ import pandas as pd
 from typing import Optional
 from scripts import utils, config
 import country_converter as coco
+from zipfile import ZipFile
 
 # ====================================================
 #Our World In Data - CO2 and Greenhouse gas emissions
@@ -63,4 +64,52 @@ def get_emdat(*, start_year:Optional[int] = 2000) -> pd.DataFrame:
 
 
 
+# ==========================================================
+# ND-GAIN
+# ==========================================================
 
+def _clean_ndgain(df:pd.DataFrame, index_name:str) -> pd.DataFrame:
+    """returns a clean dataframe with latest year data"""
+
+    latest_year = df.columns[-1]
+    return (df[['ISO3', latest_year]]
+            .rename(columns={'ISO3':'iso_code', latest_year:index_name}))
+
+
+def read_ndgain_index(folder: ZipFile, index: str, path: str):
+    """parse folder structure and read csv for an indicator"""
+
+    if f'{path}{index}.csv' not in list(folder.NameToInfo.keys()):
+        raise ValueError(f"Invalid path for {index}: {path}{index}")
+
+    df = pd.read_csv(folder.open(f"{path}{index}.csv"), low_memory=False).pipe(_clean_ndgain, index)
+
+    return df
+
+def get_ndgain_data():
+    """pipeline to extract all relevant nd-gain data"""
+
+    url = 'https://gain.nd.edu/assets/437409/resources.zip'
+    folder = utils.unzip_folder(url)
+
+    df = read_ndgain_index(folder, 'gain', 'resources/gain/') # get main gain index
+
+
+    #vulnerability
+    vulnerability_indicators = ['vulnerability', 'water', 'food', 'health', 'ecosystems', 'infrastructure', 'habitat']
+    for vul_index in vulnerability_indicators:
+        df_index = read_ndgain_index(folder, vul_index, 'resources/vulnerability/')
+        if len(df) != len(df_index):
+            raise ValueError('wrong length')
+        df = pd.merge(df, df_index, on = 'iso_code', how='left')
+
+
+    # readiness
+    readiness_indicators = ['readiness', 'economic', 'governance']
+    for readiness_index in readiness_indicators:
+        df_index = read_ndgain_index(folder, readiness_index, 'resources/readiness/')
+        if len(df) != len(df_index):
+            raise ValueError('wrong length')
+        df = pd.merge(df, df_index, on = 'iso_code', how='left')
+
+    return df
