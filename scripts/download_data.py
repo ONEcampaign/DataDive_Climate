@@ -5,6 +5,8 @@ from typing import Optional
 from scripts import utils, config
 import country_converter as coco
 from zipfile import ZipFile
+import numpy as np
+import statsmodels.api as sm
 
 # ====================================================
 #Our World In Data - CO2 and Greenhouse gas emissions
@@ -111,5 +113,32 @@ def get_ndgain_data():
         if len(df) != len(df_index):
             raise ValueError('wrong length')
         df = pd.merge(df, df_index, on = 'iso_code', how='left')
+
+    return df
+
+
+def get_global_temp(lowess_frac: float = 0.25) -> pd.DataFrame:
+    """Data from NASA GISS: https://data.giss.nasa.gov/gistemp/
+
+    frac: float
+        fraction of data used when estimating y values, between 0-1
+
+    """
+
+    url = 'https://data.giss.nasa.gov/gistemp/tabledata_v4/GLB.Ts+dSST.csv'
+    try:
+        df = pd.read_csv(url, skiprows = 1)
+    except ConnectionError:
+        raise ConnectionError('Could not read NASA GISS data')
+
+    df = (df.rename(columns = {'Year':'year', 'J-D':'temp_anomaly'})
+          [['year', 'temp_anomaly']]
+          .replace('***', np.nan)
+          .assign(temp_anomaly = lambda d: pd.to_numeric(d.temp_anomaly))
+          .dropna(subset = 'temp_anomaly'))
+
+    #apply lowess smoothing
+    df['lowess'] = sm.nonparametric.lowess(df.temp_anomaly, df.year,
+                                                                     return_sorted=False, frac = lowess_frac)
 
     return df
