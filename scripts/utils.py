@@ -3,11 +3,13 @@
 from scripts import config
 import wbgapi as wb
 import pandas as pd
+import numpy as np
 import weo
 import country_converter as coco
-import requests
 from zipfile import ZipFile
 import io
+import requests
+import camelot
 
 
 def unzip_folder(url) -> ZipFile:
@@ -168,7 +170,7 @@ def get_wb_indicator(code: str, database: int = 2) -> pd.DataFrame:
 
 
 # ==========================================
-# IMF
+# IMF WEO
 # ==============================================
 
 WEO_YEAR = 2022
@@ -275,3 +277,67 @@ def add_gdp_latest(
     df[new_col_name] = df[iso_col].map(gdp_dict)
 
     return df
+
+
+
+# ==============================================
+# Debt distress
+# ==============================================
+
+def __download_pdf(url: str, local_path: str) -> None:
+    """Downloads the a pdf to the file"""
+
+    try:
+        response = requests.get(url)
+        with open(local_path, "wb") as f:
+            f.write(response.content)
+    except ConnectionError:
+        raise ConnectionError("Could not download PDF")
+
+def __pdf_to_df(local_path: str) -> pd.DataFrame:
+    """Reads a pdf and returns a dataframe"""
+
+    try:
+        tables = camelot.read_pdf(local_path, flavor="stream")
+        if len(tables) != 1:
+            raise ValueError("There is more than 1 page. Check PDF")
+
+        return tables[0].df
+
+    except ValueError:
+        raise ValueError("Could not read PDF to a dataframe")
+
+
+def __clean_df(df: pd.DataFrame) -> pd.DataFrame:
+    """Cleans the dataframe"""
+
+    return (
+        df.filter([0, 2], axis=1)
+            .rename(columns={0: "country", 2: "debt_distress"})
+            .assign(iso_code=lambda d: coco.convert(d.country))
+            .loc[lambda d: d.iso_code != "not found"]
+            .reset_index(drop=True)
+            .filter(["iso_code", "debt_distress"], axis=1)
+            .replace({"…": np.nan, "": np.nan})
+    )
+
+def get_debt_distress():
+    """Downloads and reads debt distress"""
+
+    url = "https://www.imf.org/external/Pubs/ft/dsa/DSAlist.pdf"
+    pdf_path = f"{config.paths.raw_data}/dsa.pdf"
+
+    __download_pdf(url, pdf_path)
+    df = (__pdf_to_df(pdf_path)
+          .pipe(__clean_df))
+
+    return df
+
+def add_debt_distress(df: pd.DataFrame, iso_col:str = 'iso_code') -> pd.DataFrame:
+    """Add debt distress to a dataframe"""
+
+    debt_distress = (get_debt_distress().set_index(iso_col).to_dict())
+    return df.assign(debt_distress=lambda d: d[iso_col].map(debt_distress['debt_distress']))
+
+
+

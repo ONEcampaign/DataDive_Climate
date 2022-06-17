@@ -140,5 +140,4 @@ def get_global_temp(lowess_frac: float = 0.25) -> pd.DataFrame:
     #apply lowess smoothing
     df['lowess'] = sm.nonparametric.lowess(df.temp_anomaly, df.year,
                                                                      return_sorted=False, frac = lowess_frac)
-
     return df
