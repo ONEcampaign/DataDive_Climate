@@ -15,7 +15,7 @@ def drought_flood_map() -> None:
           .to_csv(f'{config.paths.output}/drought_flood_map.csv', index=False))
 
 
-def vuln_readi_scatter():
+def gain() -> None:
     """ """
 
     df = get_ndgain_data()
@@ -29,8 +29,18 @@ def vuln_readi_scatter():
           .pipe(utils.highlight_category, 'continent', 'Africa', True)
           )
 
-    return df
+    df.to_csv(f'{config.paths.output}/gain.csv', index=False)
 
+
+def gain_top_bar(df: pd.DataFrame):
+    """ """
+
+    df = (df[['iso_code', 'gain', 'vulnerability', 'readiness', 'country', 'continent', 'Africa']]
+              .sort_values('gain')
+              .iloc[:30]
+        .reset_index(drop=True)
+    )
+    return df
 
 
 
