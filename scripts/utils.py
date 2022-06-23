@@ -46,6 +46,17 @@ def add_flourish_geometries(
     return pd.merge(g, df, on=key_column_name, how="left")
 
 
+def highlight_category(df: pd.DataFrame, column:str, keep_value:str, new_column:bool= False):
+    """ """
+
+    if new_column:
+        df[keep_value] = df[column]
+        df.loc[df[keep_value] != keep_value, keep_value] = np.nan
+    else:
+        df.loc[df[column] != keep_value, column] = np.nan
+
+    return df
+
 def remove_unnamed_cols(df: pd.DataFrame) -> pd.DataFrame:
     """removes all columns with 'Unnamed'"""
 

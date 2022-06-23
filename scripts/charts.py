@@ -20,13 +20,19 @@ def vuln_readi_scatter():
 
     df = get_ndgain_data()
     df = (df
+          .dropna(subset = ['gain', 'vulnerability', 'readiness'])
           .pipe(utils.add_income_levels)
           .pipe(utils.add_debt_distress)
-          .dropna(subset = ['gain', 'vulnerability', 'readiness'])
           .assign(country = lambda d: coco.convert(d.iso_code, to = 'name_short'))
+          .assign(continent = lambda d: coco.convert(d.iso_code, to = 'continent'))
+          .pipe(utils.highlight_category, 'income_level', 'Low income', True)
+          .pipe(utils.highlight_category, 'continent', 'Africa', True)
           )
 
     return df
+
+
+
 
 
 def co2_per_capita_continent():
