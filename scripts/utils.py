@@ -72,14 +72,13 @@ def clean_numeric_column(column: pd.Series) -> pd.Series:
     return column
 
 
-def get_latest_values(
-        df: pd.DataFrame, grouping_col: str, date_col: str
+def get_latest(
+        df: pd.DataFrame, by: list | str, date_col: str = "date"
 ) -> pd.DataFrame:
-    """returns a dataframe with only latest values per group"""
-
-    return df.loc[
-        df.groupby(grouping_col)[date_col].transform(max) == df[date_col]
-        ].reset_index(drop=True)
+    """Get the latest value, grouping by columns specified in 'by'"""
+    if isinstance(by, str):
+        by = [by]
+    return df.sort_values(by=by + [date_col]).groupby(by, as_index=False).last()
 
 
 def keep_countries(df: pd.DataFrame, iso_col: str = "iso_code") -> pd.DataFrame:
@@ -178,6 +177,32 @@ def get_wb_indicator(code: str, database: int = 2) -> pd.DataFrame:
     print(f"Successfully extracted {code} from World Bank")
 
     return df
+
+def get_pop():
+    """ """
+
+    df = get_wb_indicator('SP.POP.TOTL')
+
+    return (df
+            .dropna(subset='value')
+            .reset_index(drop=True)
+            .pipe(get_latest, ['iso_code', 'country_name'], date_col='year'))
+
+def get_pop_latest():
+    """ """
+
+    return get_pop().pipe(get_latest, ['iso_code', 'country_name'], date_col='year')
+
+def add_pop_latest(df: pd.DataFrame, iso_col = 'iso_code') -> pd.DataFrame:
+    """ """
+
+    pop = get_pop_latest().set_index('iso_code')['value'].to_dict()
+    df['pop'] = df[iso_col].map(pop)
+
+    return df
+
+
+
 
 
 # ==========================================
