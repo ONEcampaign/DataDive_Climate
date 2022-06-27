@@ -89,7 +89,7 @@ def keep_countries(df: pd.DataFrame, iso_col: str = "iso_code") -> pd.DataFrame:
 
 
 def filter_countries(
-        df: pd.DataFrame, by: str, values: list = ["Africa"], iso_col: str = "iso_code"
+        df: pd.DataFrame, by: str = 'continent', values: list = ["Africa"], iso_col: str = "iso_code"
 ) -> pd.DataFrame:
     """
     returns a filtered dataframe
@@ -197,9 +197,27 @@ def add_pop_latest(df: pd.DataFrame, iso_col = 'iso_code') -> pd.DataFrame:
     """ """
 
     pop = get_pop_latest().set_index('iso_code')['value'].to_dict()
-    df['pop'] = df[iso_col].map(pop)
+    df['population'] = df[iso_col].map(pop)
 
     return df
+
+def per_capita(df: pd.DataFrame, target_col: str, new_column = True, percent = False, iso_col = 'iso_code') -> pd.DataFrame:
+    """standardize a column by population"""
+
+    df = add_pop_latest(df, iso_col)
+    if percent:
+        calc_series =  (df[target_col]/df['population'])*100
+    else:
+        calc_series =  df[target_col]/df['population']
+
+    if new_column:
+        df[target_col + '_per_capita'] = calc_series
+    else:
+        df[target_col] = calc_series
+
+    return df.drop(columns='population')
+
+
 
 
 

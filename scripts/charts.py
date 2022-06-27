@@ -68,4 +68,33 @@ def co2_per_capita_income():
 
 
 
+events = ['Drought', 'Storm', 'Flood'] #'Wildfire', 'Extreme temperature ', 'Insect infestation'
+
+def climate_events(start_year = 2020):
+    """ """
+
+    df = get_emdat(start_year = start_year)
+    df = (df
+                .pivot(index=['year', 'iso_code'], columns = 'disaster_type', values = 'total_affected')
+                .fillna(0)
+                .assign(total_affected= lambda d: d.sum(axis=1))
+                .reset_index()
+                )
+    df = df.groupby('iso_code', as_index=False).agg('sum').drop(columns='year')
+    df = df.melt(id_vars = 'iso_code')
+    df = utils.per_capita(df, 'value', percent=True)
+
+
+    df['country'] = coco.convert(df.iso_code, to='name_short')
+    df = utils.filter_countries(df) #keep africa
+
+
+    #select only top 20 per category
+    df = df.sort_values('value_per_capita', ascending=False).groupby('disaster_type').head(30)
+    df = df[df['value_per_capita']>0].reset_index(drop=True)
+
+
+
+
+    return df
 
