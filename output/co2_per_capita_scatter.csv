@@ -1,0 +1,190 @@
+iso_code,country,year,co2_per_capita,population,gdp_per_capita,income_level,continent,Africa
+ABW,Aruba,2020,7.055,106766.0,28862.749,High income,America,
+AFG,Afghanistan,2020,0.312,38928341.0,611.268,Low income,Asia,
+AGO,Angola,2020,0.675,32866268.0,3792.754,Lower middle income,Africa,Africa
+ALB,Albania,2020,1.576,2837849.0,6259.602,Upper middle income,Europe,
+AND,Andorra,2020,6.035,77265.0,41930.271,High income,Europe,
+ARE,United Arab Emirates,2020,15.193,9890400.0,50348.816,High income,Asia,
+ARG,Argentina,2020,3.473,45376763.0,12187.297,Upper middle income,America,
+ARM,Armenia,2020,1.988,2963234.0,4741.429,Upper middle income,Asia,
+ATG,Antigua and Barbuda,2020,4.395,97928.0,16085.42,High income,America,
+AUS,Australia,2020,15.368,25693267.0,67464.386,High income,Oceania,
+AUT,Austria,2020,6.732,8916864.0,53370.707,High income,Europe,
+AZE,Azerbaijan,2020,3.72,10093121.0,7164.546,Upper middle income,Asia,
+BDI,Burundi,2020,0.051,11890781.0,272.355,Low income,Africa,Africa
+BEL,Belgium,2020,7.226,11544241.0,52484.57,High income,Europe,
+BEN,Benin,2020,0.553,12123198.0,1432.302,Lower middle income,Africa,Africa
+BFA,Burkina Faso,2020,0.19,20903278.0,885.941,Low income,Africa,Africa
+BGD,Bangladesh,2020,0.564,164689383.0,2361.984,Lower middle income,Asia,
+BGR,Bulgaria,2020,5.389,6934015.0,13101.479,Upper middle income,Europe,
+BHR,Bahrain,2020,20.546,1701583.0,29103.363,High income,Asia,
+BHS,Bahamas,2020,5.945,393248.0,32077.311,High income,America,
+BIH,Bosnia and Herzegovina,2020,6.528,3280815.0,6725.58,Upper middle income,Europe,
+BLR,Belarus,2020,6.079,9379952.0,6384.266,Upper middle income,Europe,
+BLZ,Belize,2020,1.466,397621.0,4519.823,Lower middle income,America,
+BOL,Bolivia,2020,1.773,11673029.0,3430.765,Lower middle income,America,
+BRA,Brazil,2020,2.199,212559409.0,8570.276,Upper middle income,America,
+BRB,Barbados,2020,3.782,287371.0,19110.462,High income,America,
+BRN,Brunei Darussalam,2020,23.22,437483.0,79816.308,High income,Asia,
+BTN,Bhutan,2020,2.495,771612.0,3491.268,Lower middle income,Asia,
+BWA,Botswana,2020,2.772,2351625.0,7519.206,Upper middle income,Africa,Africa
+CAF,Central African Republic,2020,0.039,4829764.0,527.215,Low income,Africa,Africa
+CAN,Canada,2020,14.197,38037204.0,57405.931,High income,America,
+CHE,Switzerland,2020,3.732,8636561.0,96390.049,High income,Europe,
+CHL,Chile,2020,4.246,19116209.0,15941.341,High income,America,
+CHN,China,2020,7.412,1410929362.0,14096.235,Upper middle income,Asia,
+CIV,Cote d'Ivoire,2020,0.382,26378275.0,2574.087,Lower middle income,Africa,Africa
+CMR,Cameroon,2020,0.26,26545864.0,1637.768,Lower middle income,Africa,Africa
+COD,DR Congo,2020,0.028,89561404.0,669.365,Low income,Africa,Africa
+COG,Congo Republic,2020,0.565,5518092.0,3242.942,Lower middle income,Africa,Africa
+COL,Colombia,2020,1.751,50882884.0,6806.523,Upper middle income,America,
+COM,Comoros,2020,0.297,869595.0,1371.029,Lower middle income,Africa,Africa
+CPV,Cabo Verde,2020,0.989,555988.0,3502.981,Lower middle income,Africa,Africa
+CRI,Costa Rica,2020,1.552,5094114.0,12483.076,Upper middle income,America,
+CYP,Cyprus,2020,5.38,1207361.0,30663.215,High income,Asia,
+CZE,Czech Republic,2020,8.215,10697858.0,27609.193,High income,Europe,
+DEU,Germany,2020,7.69,83160871.0,51103.976,High income,Europe,
+DJI,Djibouti,2020,0.356,988002.0,3775.004,Lower middle income,Africa,Africa
+DMA,Dominica,2020,1.934,71991.0,8575.285,Upper middle income,America,
+DNK,Denmark,2020,4.522,5831404.0,68093.996,High income,Europe,
+DOM,Dominican Republic,2020,2.56,10847904.0,10259.337,Upper middle income,America,
+DZA,Algeria,2020,3.535,43851043.0,4294.418,Lower middle income,Africa,Africa
+ECU,Ecuador,2020,1.753,17643060.0,6412.351,Upper middle income,America,
+EGY,Egypt,2020,2.086,102334403.0,4162.081,Lower middle income,Africa,Africa
+ERI,Eritrea,2020,0.204,3213969.0,701.15,Low income,Africa,Africa
+ESP,Spain,2020,4.468,47363419.0,30156.687,High income,Europe,
+EST,Estonia,2020,7.88,1329479.0,27970.807,High income,Europe,
+ETH,Ethiopia,2020,0.128,114963583.0,1039.773,Low income,Africa,Africa
+FIN,Finland,2020,7.091,5529543.0,53744.875,High income,Europe,
+FJI,Fiji,2020,1.554,896444.0,5685.258,Upper middle income,Oceania,
+FRA,France,2020,4.238,67379908.0,44747.264,High income,Europe,
+GAB,Gabon,2020,1.931,2225728.0,10390.314,Upper middle income,Africa,Africa
+GBR,United Kingdom,2020,4.855,67215293.0,49761.126,High income,Europe,
+GEO,Georgia,2020,2.499,3722716.0,5617.963,Upper middle income,Asia,
+GHA,Ghana,2020,0.515,31072945.0,2303.29,Lower middle income,Africa,Africa
+GIN,Guinea,2020,0.258,13132792.0,1427.798,Low income,Africa,Africa
+GMB,Gambia,2020,0.207,2416664.0,843.846,Low income,Africa,Africa
+GNB,Guinea-Bissau,2020,0.146,1967998.0,872.978,Low income,Africa,Africa
+GNQ,Equatorial Guinea,2020,7.317,1402985.0,10902.139,Upper middle income,Africa,Africa
+GRC,Greece,2020,5.012,10700556.0,20939.754,High income,Europe,
+GRD,Grenada,2020,2.62,112519.0,10471.939,Upper middle income,America,
+GTM,Guatemala,2020,1.057,16858333.0,4863.909,Upper middle income,America,
+GUY,Guyana,2020,2.813,786559.0,17107.524,Upper middle income,America,
+HKG,Hong Kong,2020,4.167,7481800.0,49849.841,High income,Asia,
+HND,Honduras,2020,0.975,9904608.0,2925.447,Lower middle income,America,
+HRV,Croatia,2020,4.137,4047680.0,17337.821,High income,Europe,
+HTI,Haiti,2020,0.256,11402533.0,1671.512,Lower middle income,America,
+HUN,Hungary,2020,4.997,9750149.0,20335.818,High income,Europe,
+IDN,Indonesia,2020,2.155,273523621.0,4690.749,Lower middle income,Asia,
+IND,India,2020,1.769,1380004385.0,2515.435,Lower middle income,Asia,
+IRL,Ireland,2020,6.754,4985674.0,101509.49,High income,Europe,
+IRN,Iran,2020,8.87,83992953.0,20261.008,Lower middle income,Asia,
+IRQ,Iraq,2020,5.242,40222503.0,7038.242,Upper middle income,Asia,
+ISL,Iceland,2020,8.604,366463.0,74417.385,High income,Europe,
+ISR,Israel,2020,6.51,9215100.0,54688.303,High income,Asia,
+ITA,Italy,2020,5.025,59449527.0,34777.089,High income,Europe,
+JAM,Jamaica,2020,2.509,2961161.0,5730.397,Upper middle income,America,
+JOR,Jordan,2020,2.498,10203140.0,4635.073,Upper middle income,Asia,
+JPN,Japan,2020,8.15,125836021.0,39243.371,High income,Asia,
+KAZ,Kazakhstan,2020,15.516,18754440.0,10003.119,Upper middle income,Asia,
+KEN,Kenya,2020,0.3,53771300.0,2251.98,Lower middle income,Africa,Africa
+KGZ,Kyrgyz Republic,2020,1.764,6579900.0,1327.009,Lower middle income,Asia,
+KHM,Cambodia,2020,0.917,16718971.0,1751.985,Lower middle income,Asia,
+KIR,Kiribati,2020,0.57,119446.0,1745.094,Lower middle income,Oceania,
+KNA,St. Kitts and Nevis,2020,3.986,53192.0,19117.109,High income,America,
+KOR,South Korea,2020,11.656,51836239.0,34994.199,High income,Asia,
+KWT,Kuwait,2020,20.825,4270563.0,38755.059,High income,Asia,
+LAO,Laos,2020,4.652,7275556.0,2318.822,Lower middle income,Asia,
+LBN,Lebanon,2020,3.805,6825442.0,4002.74,Upper middle income,Asia,
+LBR,Liberia,2020,0.2,5057677.0,776.35,Low income,Africa,Africa
+LBY,Libya,2020,7.382,6871287.0,7196.794,Upper middle income,Africa,Africa
+LCA,St. Lucia,2020,2.396,183629.0,11363.749,Upper middle income,America,
+LKA,Sri Lanka,2020,0.986,21919000.0,3698.559,Lower middle income,Asia,
+LSO,Lesotho,2020,1.019,2142252.0,1212.571,Lower middle income,Africa,Africa
+LTU,Lithuania,2020,5.069,2794885.0,25015.372,High income,Europe,
+LUX,Luxembourg,2020,13.059,630419.0,135045.821,High income,Europe,
+LVA,Latvia,2020,3.591,1900449.0,21311.146,High income,Europe,
+MAR,Morocco,2020,1.748,36910558.0,3628.641,Lower middle income,Africa,Africa
+MDA,Moldova,2020,1.276,2620495.0,5435.446,Upper middle income,Europe,
+MDG,Madagascar,2020,0.133,27691019.0,504.308,Low income,Africa,Africa
+MDV,Maldives,2020,3.324,540542.0,14078.416,Upper middle income,Asia,
+MEX,Mexico,2020,2.769,128932753.0,10165.665,Upper middle income,America,
+MHL,Marshall Islands,2020,2.556,59194.0,4755.731,Upper middle income,Oceania,
+MKD,Macedonia,2020,3.43,2072531.0,6862.719,Upper middle income,Europe,
+MLI,Mali,2020,0.167,20250834.0,896.585,Low income,Africa,Africa
+MLT,Malta,2020,3.612,515332.0,33094.278,High income,Europe,
+MMR,Myanmar,2020,0.668,54409794.0,1285.338,Lower middle income,Asia,
+MNE,Montenegro,2020,3.678,621306.0,9673.498,Upper middle income,Europe,
+MNG,Mongolia,2020,26.978,3278292.0,5205.96,Lower middle income,Asia,
+MOZ,Mozambique,2020,0.21,31255435.0,546.718,Low income,Africa,Africa
+MRT,Mauritania,2020,0.726,4649660.0,2141.061,Lower middle income,Africa,Africa
+MUS,Mauritius,2020,3.129,1265740.0,8892.105,Upper middle income,Africa,Africa
+MWI,Malawi,2020,0.073,19129955.0,545.065,Low income,Africa,Africa
+MYS,Malaysia,2020,8.423,32365998.0,13268.339,Upper middle income,Asia,
+NAM,Namibia,2020,1.526,2540916.0,5016.174,Upper middle income,Africa,Africa
+NER,Niger,2020,0.07,24206636.0,598.851,Low income,Africa,Africa
+NGA,Nigeria,2020,0.609,206139587.0,2355.688,Lower middle income,Africa,Africa
+NIC,Nicaragua,2020,0.766,6624554.0,2384.002,Lower middle income,America,
+NLD,Netherlands,2020,8.06,17441500.0,57835.725,High income,Europe,
+NOR,Norway,2020,7.615,5379475.0,99480.855,High income,Europe,
+NPL,Nepal,2020,0.582,29136808.0,1203.085,Lower middle income,Asia,
+NRU,Nauru,2020,5.236,10834.0,10004.731,High income,Oceania,
+NZL,New Zealand,2020,6.942,5084300.0,49847.305,High income,Oceania,
+OMN,Oman,2020,12.173,5106622.0,23416.491,High income,Asia,
+PAK,Pakistan,2020,1.063,220892331.0,1562.258,Lower middle income,Asia,
+PAN,Panama,2020,2.498,4314768.0,16037.641,Upper middle income,America,
+PER,Peru,2020,1.356,32971846.0,7034.448,Upper middle income,America,
+PHL,Philippines,2020,1.241,109581085.0,3686.844,Lower middle income,Asia,
+PLW,Palau,2020,12.125,18092.0,13705.645,High income,Oceania,
+PNG,Papua New Guinea,2020,0.744,8947027.0,3269.474,Lower middle income,Oceania,
+POL,Poland,2020,7.916,37899070.0,18505.719,High income,Europe,
+PRI,Puerto Rico,2020,0.145,3281538.0,37822.593,High income,America,
+PRT,Portugal,2020,3.961,10297081.0,24495.209,High income,Europe,
+PRY,Paraguay,2020,1.061,7132530.0,5626.082,Upper middle income,America,
+QAT,Qatar,2020,37.019,2881060.0,84514.142,High income,Asia,
+ROU,Romania,2020,3.715,19257520.0,14825.21,Upper middle income,Europe,
+RUS,Russia,2020,10.807,144104080.0,12574.926,Upper middle income,Europe,
+RWA,Rwanda,2020,0.08,12952209.0,909.91,Low income,Africa,Africa
+SAU,Saudi Arabia,2020,17.967,34813867.0,28759.275,High income,Asia,
+SDN,Sudan,2020,0.43,43849269.0,673.935,Low income,Africa,Africa
+SEN,Senegal,2020,0.624,16743930.0,1608.642,Lower middle income,Africa,Africa
+SGP,Singapore,2020,7.778,5685807.0,79575.891,High income,Asia,
+SLB,Solomon Islands,2020,0.435,686878.0,2333.759,Lower middle income,Oceania,
+SLE,Sierra Leone,2020,0.11,7976985.0,513.338,Low income,Africa,Africa
+SLV,El Salvador,2020,0.944,6486201.0,4689.35,Lower middle income,America,
+SOM,Somalia,2020,0.035,15893219.0,543.833,Low income,Africa,Africa
+SRB,Serbia,2020,4.937,6899126.0,9502.708,Upper middle income,Europe,
+SSD,South Sudan,2020,0.105,11193729.0,392.704,Low income,Africa,Africa
+STP,Sao Tome and Principe,2020,0.514,219161.0,2315.158,Lower middle income,Africa,Africa
+SUR,Suriname,2020,3.791,586634.0,4842.749,Upper middle income,America,
+SVK,Slovakia,2020,5.629,5458827.0,21665.371,High income,Europe,
+SVN,Slovenia,2020,6.043,2102419.0,30159.144,High income,Europe,
+SWE,Sweden,2020,3.826,10353442.0,57977.697,High income,Europe,
+SWZ,Eswatini,2020,0.824,1160164.0,4035.54,Lower middle income,Africa,Africa
+SYC,Seychelles,2020,4.994,98462.0,17692.999,High income,Africa,Africa
+TCD,Chad,2020,0.056,16425859.0,742.943,Low income,Africa,Africa
+TGO,Togo,2020,0.265,8278737.0,999.907,Low income,Africa,Africa
+THA,Thailand,2020,3.693,69799978.0,7448.988,Upper middle income,Asia,
+TJK,Tajikistan,2020,0.991,9537642.0,795.038,Lower middle income,Asia,
+TKM,Turkmenistan,2020,12.491,6031187.0,12273.663,Upper middle income,Asia,
+TLS,Timor-Leste,2020,0.399,1318442.0,1402.056,Lower middle income,Asia,
+TON,Tonga,2020,1.36,105697.0,5283.039,Upper middle income,Oceania,
+TTO,Trinidad and Tobago,2020,25.373,1399491.0,17920.962,High income,America,
+TUN,Tunisia,2020,2.38,11818618.0,3763.007,Lower middle income,Africa,Africa
+TUR,Turkey,2020,4.657,84339067.0,8080.783,Upper middle income,Asia,
+TUV,Tuvalu,2020,0.642,11792.0,6046.532,Upper middle income,Oceania,
+TZA,Tanzania,2020,0.183,59734213.0,1260.065,Lower middle income,Africa,Africa
+UGA,Uganda,2020,0.107,45741000.0,1060.427,Low income,Africa,Africa
+UKR,Ukraine,2020,4.891,44134693.0,4827.952,Lower middle income,Europe,
+URY,Uruguay,2020,1.681,3473727.0,18082.832,High income,America,
+USA,United States,2020,14.238,331501080.0,76027.043,High income,America,
+UZB,Uzbekistan,2020,3.37,34232050.0,2071.365,Lower middle income,Asia,
+VCT,St. Vincent and the Grenadines,2020,1.883,110947.0,8595.213,Upper middle income,America,
+VEN,Venezuela,2020,2.975,28435943.0,1823.602,,America,
+VNM,Vietnam,2020,2.613,97338583.0,4121.504,Lower middle income,Asia,
+VUT,Vanuatu,2020,0.591,307150.0,3144.839,Lower middle income,Oceania,
+WSM,Samoa,2020,1.239,198410.0,4058.955,Lower middle income,Oceania,
+YEM,Yemen,2020,0.328,29825968.0,890.998,Low income,Asia,
+ZAF,South Africa,2020,7.62,59308690.0,6979.44,Upper middle income,Africa,Africa
+ZMB,Zambia,2020,0.358,18383956.0,1330.374,Lower middle income,Africa,Africa
+ZWE,Zimbabwe,2020,0.709,14862927.0,2300.56,Lower middle income,Africa,Africa

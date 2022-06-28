@@ -89,3 +89,22 @@ def climate_events(start_year=2020):
            )
 
     dff.to_csv(f'{config.paths.output}/climate_events_africa.csv', index=False)
+
+
+def co2_scatter() -> None:
+
+    df = utils.get_latest(get_owid(['co2_per_capita']), by = ['iso_code', 'country'], date_col='year')
+    df = (utils.add_pop_latest(df)
+          .pipe(utils.add_gdp_latest, per_capita = True)
+          .pipe(utils.keep_countries)
+          .pipe(utils.add_income_levels)
+          .dropna(subset = ['co2_per_capita', 'population', 'gdp_per_capita'])
+          .assign(country = lambda d: coco.convert(d.iso_code, to='name_short'))
+          .assign(continent = lambda d: coco.convert(d.iso_code, to='continent'))
+          .pipe(utils.highlight_category, 'continent', 'Africa', True)
+          )
+
+    df.to_csv(f'{config.paths.output}/co2_per_capita_scatter.csv', index=False)
+
+
+

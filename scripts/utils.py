@@ -185,8 +185,8 @@ def get_pop():
 
     return (df
             .dropna(subset='value')
-            .reset_index(drop=True)
-            .pipe(get_latest, ['iso_code', 'country_name'], date_col='year'))
+            .reset_index(drop=True))
+            #.pipe(get_latest, ['iso_code', 'country_name'], date_col='year'))
 
 def get_pop_latest():
     """ """
@@ -276,9 +276,7 @@ def _clean_weo(df: pd.DataFrame) -> pd.DataFrame:
     )
 
 
-def get_weo_indicator_latest(
-        indicator: str, target_year: int = 2022, *, min_year: int = 2018
-) -> pd.DataFrame:
+def get_weo_indicator(indicator: str) -> pd.DataFrame:
     """
     Retrieves values for an indicator for a target year
     """
@@ -289,17 +287,23 @@ def get_weo_indicator_latest(
         df.pipe(_clean_weo)
             .dropna(subset=["value"])
             .loc[
-            lambda d: (d.indicator == indicator)
-                      & (d.year >= min_year)
-                      & (d.year <= target_year),
+            lambda d: (d.indicator == indicator),
             ["iso_code", "year", "value"],
         ]
             .reset_index(drop=True)
     )
-    return df.loc[
-        df.groupby(["iso_code"])["year"].transform(max) == df["year"],
-        ["iso_code", "value"],
-    ]
+
+    return df
+
+def get_weo_indicator_latest(indicator: str, target_year: int = 2022, *, min_year: int = 2018) -> pd.DataFrame:
+    """ """
+
+    df = get_weo_indicator(indicator)
+    df = df.loc[(df.year>=min_year)&(df.year<=target_year)]
+    df = get_latest(df, by='iso_code', date_col='year')
+
+    return df
+    #return (df.loc[df.groupby(["iso_code"])["year"].transform(max) == df["year"],["iso_code", "value"]])
 
 
 def get_gdp_latest(per_capita: bool = False, year: int = 2022) -> pd.DataFrame:
@@ -308,9 +312,9 @@ def get_gdp_latest(per_capita: bool = False, year: int = 2022) -> pd.DataFrame:
         set per_capita = True to return gdp per capita values
     """
     if per_capita:
-        return get_weo_indicator_latest(target_year=year, indicator="NGDPDPC")
+        return get_weo_indicator_latest(target_year=year, indicator="NGDPDPC")[["iso_code", "value"]]
     else:
-        return get_weo_indicator_latest(target_year=year, indicator="NGDPD").assign(
+        return get_weo_indicator_latest(target_year=year, indicator="NGDPD")[["iso_code", "value"]].assign(
             value=lambda d: d.value * 1e9
         )
 
