@@ -12,13 +12,13 @@ import statsmodels.api as sm
 #Our World In Data - CO2 and Greenhouse gas emissions
 # ====================================================
 
-def get_owid(indicators: Optional[list] = None):
+
+
+def get_owid(url: str, indicators: Optional[list] = None):
     """read data from OWID into a dataframe"""
 
-    URL = 'https://raw.githubusercontent.com/owid/co2-data/master/owid-co2-data.csv'
-
     try:
-        df = pd.read_csv(URL)
+        df = pd.read_csv(url)
     except ConnectionError:
         raise ConnectionError('Could not read OWID data')
 
@@ -38,7 +38,7 @@ def get_owid(indicators: Optional[list] = None):
 # Disaster events database
 # ============================================
 
-climate_events = ['Drought', 'Storm', 'Flood'] #'Wildfire', 'Extreme temperature ', 'Insect infestation'
+
 
 
 def _clean_emdat(df:pd.DataFrame, start_year = 2000) -> pd.DataFrame:
@@ -50,7 +50,7 @@ def _clean_emdat(df:pd.DataFrame, start_year = 2000) -> pd.DataFrame:
 
     df = (df[columns.keys()]
           .rename(columns=columns)
-          .loc[lambda d: (d.year>=start_year)&(d.disaster_type.isin(climate_events))]
+          .loc[lambda d: (d.year>=start_year)&(d.disaster_type.isin(config.CLIMATE_EVENTS))]
           .fillna(0)
           .reset_index(drop=True)
     )
@@ -147,3 +147,4 @@ def get_global_temp(lowess_frac: float = 0.25) -> pd.DataFrame:
     df['lowess'] = sm.nonparametric.lowess(df.temp_anomaly, df.year,
                                                                      return_sorted=False, frac = lowess_frac)
     return df
+

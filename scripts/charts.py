@@ -1,8 +1,9 @@
 """ """
-
+import numpy as np
 import pandas as pd
 import country_converter as coco
 from scripts import utils, config
+from scripts.config import urls
 from scripts.download_data import get_emdat, get_ndgain_data, get_owid
 
 
@@ -27,7 +28,7 @@ def co2_per_capita_continent():
     """ """
 
     continents = ['Asia', 'Africa', 'Oceania', 'Europe', 'North America', 'South America']
-    df = get_owid(['co2_per_capita'])
+    df = get_owid(urls.OWID_CO2_URL, ['co2_per_capita'])
     (df[(df.country.isin(continents)) & (df.year >= 1800)]
      .pivot(index='year', columns='country', values='co2_per_capita')
      .reset_index()
@@ -39,7 +40,7 @@ def co2_per_capita_income():
 
     income_levels = ['Low-income countries', 'Upper-middle-income countries', 'Lower-middle-income countries',
                      'High-income countries']
-    df = get_owid(['co2_per_capita'])
+    df = get_owid(urls.OWID_CO2_URL, ['co2_per_capita'])
     df = df[(df.country.isin(income_levels)) & (df.year >= 1800)].pivot(index='year', columns='country',
                                                                         values='co2_per_capita').reset_index()
 
@@ -47,8 +48,6 @@ def co2_per_capita_income():
 
     df.to_csv(f'{config.paths.output}/co2_per_capita_income.csv', index=False)
 
-
-events = ['Drought', 'Storm', 'Flood']  # 'Wildfire', 'Extreme temperature ', 'Insect infestation'
 
 def climate_events(start_year=2020):
     """ """
@@ -93,7 +92,7 @@ def climate_events(start_year=2020):
 
 def co2_scatter() -> None:
 
-    df = utils.get_latest(get_owid(['co2_per_capita']), by = ['iso_code', 'country'], date_col='year')
+    df = utils.get_latest(get_owid(urls.OWID_CO2_URL, ['co2_per_capita']), by = ['iso_code', 'country'], date_col='year')
     df = (utils.add_pop_latest(df)
           .pipe(utils.add_gdp_latest, per_capita = True)
           .pipe(utils.keep_countries)
@@ -105,6 +104,44 @@ def co2_scatter() -> None:
           )
 
     df.to_csv(f'{config.paths.output}/co2_per_capita_scatter.csv', index=False)
+
+
+def access_to_elect():
+    """ """
+    df = utils.get_wb_indicator('EG.ELC.ACCS.ZS')
+    df = (df.drop(columns = 'country_name')
+          .rename(columns = {'value':'access'})
+          .pipe(utils.get_latest, by='iso_code', date_col='year')
+          .dropna(subset = 'access')
+          .pipe(utils.add_flourish_geometries)
+          .assign(country = lambda d: coco.convert(d.iso_code, to='name_short', not_found = np.nan))
+          .dropna(subset = 'country')
+
+          )
+
+    return df
+
+def renewable():
+    """ """
+
+    df = get_owid(urls.OWID_ENERGY_URL, ['electricity_generation', 'renewables_electricity'])
+    df = (df
+          .loc[df.year>=1950]
+          .dropna(subset = ['electricity_generation', 'renewables_electricity'])
+          .pipe(utils.keep_countries)
+          .assign(continent = lambda d: coco.convert(d.iso_code, to='continent'))
+          .groupby(['year', 'continent'], as_index=False).agg('sum')
+          .assign(share = lambda d: (d.renewables_electricity/d.electricity_generation)*100)
+
+          )
+
+    df = df[['year', 'continent', 'share']].pivot(index='year', columns = 'continent', values = 'share').reset_index()
+
+    return df
+
+
+
+
 
 
 
