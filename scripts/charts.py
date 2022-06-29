@@ -4,7 +4,7 @@ import pandas as pd
 import country_converter as coco
 from scripts import utils, config
 from scripts.config import urls
-from scripts.download_data import get_emdat, get_ndgain_data, get_owid
+from scripts.download_data import get_emdat, get_ndgain_data, get_owid, get_emp_ag
 
 
 def gain() -> None:
@@ -19,9 +19,28 @@ def gain() -> None:
           .assign(continent=lambda d: coco.convert(d.iso_code, to='continent'))
           .pipe(utils.highlight_category, 'income_level', 'Low income', True)
           .pipe(utils.highlight_category, 'continent', 'Africa', True)
+          .pipe(utils.add_pop_latest)
           )
 
+    #add employment in agriculture
+    ag = get_emp_ag()
+    df['employment_agr'] = df.iso_code.map(ag.set_index('iso_code')['employment_agr'].to_dict())
+
     df.to_csv(f'{config.paths.output}/gain.csv', index=False)
+
+
+def gain_map() -> None:
+    """ """
+    df = get_ndgain_data()
+    df = (df
+          .dropna(subset=['gain', 'vulnerability', 'readiness'])
+          .pipe(utils.add_income_levels)
+          .assign(country=lambda d: coco.convert(d.iso_code, to='name_short'))
+          .pipe(utils.add_flourish_geometries)
+          )
+
+    df.to_csv(f'{config.paths.output}/gain_map.csv', index=False)
+
 
 
 def co2_per_capita_continent():

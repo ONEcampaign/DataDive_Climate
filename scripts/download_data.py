@@ -148,3 +148,17 @@ def get_global_temp(lowess_frac: float = 0.25) -> pd.DataFrame:
                                                                      return_sorted=False, frac = lowess_frac)
     return df
 
+
+
+def get_emp_ag():
+    """ """
+
+    df = utils.get_wb_indicator('SL.AGR.EMPL.ZS')
+    return (df
+            .dropna(subset = 'value')
+            .drop(columns = 'country_name')
+            .pipe(utils.get_latest, by = 'iso_code', date_col = 'year')
+            .rename(columns = {'value':'employment_agr'})
+            .drop(columns = 'year')
+
+            )
