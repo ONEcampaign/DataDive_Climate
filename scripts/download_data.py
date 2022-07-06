@@ -178,3 +178,14 @@ def get_sahel_population(countries: tuple = ('Burkina Faso', 'Cameroon', 'Chad',
           )
 
     return df
+
+
+
+def get_forest_area():
+    """ """
+
+    df =  (utils.get_wb_indicator('AG.LND.FRST.ZS')
+            .pipe(utils.get_latest, by=['iso_code', 'country_name'], date_col = 'year')
+            .pipe(utils.add_flourish_geometries)
+            )
+    df.to_csv(f'{config.paths.output}/forest_area.csv', index=False)
