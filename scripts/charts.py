@@ -4,7 +4,7 @@ import pandas as pd
 import country_converter as coco
 from scripts import utils, config
 from scripts.config import urls
-from scripts.download_data import get_emdat, get_ndgain_data, get_owid, get_emp_ag
+from scripts.download_data import get_emdat, get_ndgain_data, get_owid, get_emp_ag, get_sahel_population
 
 
 def gain() -> None:
@@ -176,6 +176,19 @@ def renewables_country():
             .pipe(utils.filter_countries)
             .melt(id_vars=['iso_code', 'year'])
             .assign(country = lambda d: coco.convert(d.iso_code, to='name_short')))
+
+
+def sahel_population():
+    """ """
+
+    df = (get_sahel_population()
+          .assign(iso_code = lambda d: coco.convert(d.Location))
+          .pipe(utils.add_flourish_geometries)
+          .dropna(subset = 'Location')
+          .assign(pop_2022 = lambda d: round(d[2022]/1000,0))
+          .assign(pop_2050 = lambda d: round(d[2050]/1000,0))
+          .to_csv(f'{config.paths.output}/sahel_population.csv', index=False)
+          )
 
 
 
