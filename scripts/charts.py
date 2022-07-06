@@ -53,6 +53,16 @@ def co2_per_capita_continent():
      .reset_index()
      .to_csv(f'{config.paths.output}/co2_per_capita_continent.csv', index=False))
 
+def co2_continent():
+    """ """
+    continents = ['Asia', 'Africa', 'Oceania', 'Europe', 'North America', 'South America']
+    df = get_owid(urls.OWID_CO2_URL, ['co2'])
+    (df[(df.country.isin(continents)) & (df.year >= 1800)]
+     .pivot(index='year', columns='country', values='co2')
+     .reset_index()
+     .to_csv(f'{config.paths.output}/co2_continent.csv', index=False))
+
+
 
 def co2_per_capita_income():
     """ """
