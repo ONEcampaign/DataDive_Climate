@@ -135,21 +135,6 @@ def co2_scatter() -> None:
     df.to_csv(f'{config.paths.output}/co2_per_capita_scatter.csv', index=False)
 
 
-def access_to_elect():
-    """ """
-    df = utils.get_wb_indicator('EG.ELC.ACCS.ZS')
-    df = (df.drop(columns = 'country_name')
-          .rename(columns = {'value':'access'})
-          .pipe(utils.get_latest, by='iso_code', date_col='year')
-          .dropna(subset = 'access')
-          .pipe(utils.add_flourish_geometries)
-          .assign(country = lambda d: coco.convert(d.iso_code, to='name_short', not_found = np.nan))
-          .dropna(subset = 'country')
-
-          )
-
-    return df
-
 def electricity():
     """ """
     elec = utils.get_wb_indicator('EG.ELC.ACCS.ZS').rename(columns = {'value': 'electricity'})
