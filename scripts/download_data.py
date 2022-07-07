@@ -160,19 +160,21 @@ def get_emp_ag():
 
 # population
 
-def get_sahel_population(countries: tuple = ('Burkina Faso', 'Cameroon', 'Chad', 'Gambia', 'Guinea', 'Mauritania',
-                                             'Mali', 'Niger', 'Nigeria', 'Senegal'),
-                         variant: str = 'Medium'):
+def get_population(variant: str = 'Medium'):
     """ """
+    rename_countries = {'China, Hong Kong SAR': 'Hong Kong',
+                        'China, Taiwan Province of China':'Taiwan',
+                        'China, Macao SAR':'Macao',
+                        }
 
     url = 'https://population.un.org/wpp/Download/Files/1_Indicators%20(' \
           'Standard)/CSV_FILES/WPP2019_TotalPopulationBySex.csv '
     df = pd.read_csv(url)
-    df = df.loc[(df.Variant == variant) & (df.Location.isin(countries)) & (df.Time.isin([2022, 2050])),
-                ['Location', 'Time', 'PopTotal']]
-    df = (df.set_index(['Location', 'Time'])
-          .PopTotal
-          .unstack('Time')
+    df = (df.loc[(df.Variant == variant)&(df.Time.isin([2022, 2050]))]
+          .reset_index(drop=True)
+          .pipe(utils.keep_countries,  mapping_col='LocID', mapper = 'ISOnumeric')
+          .replace(rename_countries)
+          .pivot(index='Location', columns='Time', values = 'PopTotal')
           .reset_index()
           .assign(change=lambda d: ((d[2050] - d[2022]) / d[2022]) * 100)
           )
@@ -188,4 +190,4 @@ def get_forest_area():
             .pipe(utils.get_latest, by=['iso_code', 'country_name'], date_col = 'year')
             .pipe(utils.add_flourish_geometries)
             )
-    df.to_csv(f'{config.paths.output}/forest_area.csv', index=False)
+    return df

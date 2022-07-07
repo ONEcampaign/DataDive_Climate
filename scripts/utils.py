@@ -81,11 +81,11 @@ def get_latest(
     return df.sort_values(by=by + [date_col]).groupby(by, as_index=False).last()
 
 
-def keep_countries(df: pd.DataFrame, iso_col: str = "iso_code") -> pd.DataFrame:
+def keep_countries(df: pd.DataFrame, mapping_col: str = "iso_code", mapper = 'ISO3') -> pd.DataFrame:
     """returns a dataframe with only countries"""
 
     cc = coco.CountryConverter()
-    return df[df[iso_col].isin(cc.data["ISO3"])].reset_index(drop=True)
+    return df[df[mapping_col].isin(cc.data[mapper])].reset_index(drop=True)
 
 
 def filter_countries(

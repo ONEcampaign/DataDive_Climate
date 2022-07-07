@@ -4,7 +4,7 @@ import pandas as pd
 import country_converter as coco
 from scripts import utils, config
 from scripts.config import urls
-from scripts.download_data import get_emdat, get_ndgain_data, get_owid, get_emp_ag, get_sahel_population
+from scripts.download_data import get_emdat, get_ndgain_data, get_owid, get_emp_ag, get_population, get_forest_area
 
 
 def gain() -> None:
@@ -150,6 +150,26 @@ def access_to_elect():
 
     return df
 
+def electricity():
+    """ """
+    elec = utils.get_wb_indicator('EG.ELC.ACCS.ZS').rename(columns = {'value': 'electricity'})
+    cooking = utils.get_wb_indicator('EG.CFT.ACCS.ZS').rename(columns = {'value': 'cooking'})
+
+    df = pd.merge(elec, cooking, on = ['iso_code', 'country_name', 'year'], how='inner')
+
+    df = (df.pipe(utils.get_latest, by='iso_code', date_col='year')
+    .pipe(utils.get_latest, by = ['iso_code', 'country_name'], date_col = 'year')
+     .dropna(subset = ['electricity', 'cooking'])
+     .pipe(utils.add_gdp_latest, per_capita = True)
+     .pipe(utils.add_pop_latest)
+
+     )
+    return df
+
+
+
+
+
 def renewable():
     """ """
 
@@ -191,15 +211,25 @@ def renewables_country():
 def sahel_population():
     """ """
 
-    df = (get_sahel_population()
-          .assign(iso_code = lambda d: coco.convert(d.Location))
-          .pipe(utils.add_flourish_geometries)
-          .dropna(subset = 'Location')
+    df = (get_population()
+          .sort_values('change', ascending=False)
+          .head(30)
           .assign(pop_2022 = lambda d: round(d[2022]/1000,0))
           .assign(pop_2050 = lambda d: round(d[2050]/1000,0))
           .to_csv(f'{config.paths.output}/sahel_population.csv', index=False)
           )
 
+def forest_africa():
+    """ """
+    congo_basin = ['CMR', 'CAF', 'COD', 'COG', 'GAB', 'GNQ']
+
+    df = (get_forest_area()
+          .pipe(utils.filter_countries)
+          .assign(congo_basin = np.nan))
+
+    df.loc[df.iso_code.isin(congo_basin), 'congo_basin'] = 'congo_basin'
+
+    df.to_csv(f'{config.paths.output}/forest_area.csv', index=False)
 
 
 
