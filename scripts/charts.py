@@ -152,45 +152,28 @@ def electricity():
     return df
 
 
-
-
-
 def renewable():
-    """ """
+    variables = ['fossil_electricity', 'renewables_electricity']
+    df = get_owid(urls.OWID_ENERGY_URL, variables)
 
-    df = get_owid(urls.OWID_ENERGY_URL, ['renewables_share_elec'])
     df = (df
-          .loc[df.year>=1950]
-          .dropna(subset = ['electricity_generation', 'renewables_electricity'])
-          .pipe(utils.keep_countries)
-          .assign(continent = lambda d: coco.convert(d.iso_code, to='continent'))
-          .groupby(['year', 'continent'], as_index=False).agg('sum')
-
+          .pipe(utils.get_latest, by = ['iso_code', 'country'], date_col = 'year')
+          .pipe(utils.filter_countries)
+          .assign(share_renewables = lambda d: (d.renewables_electricity /
+                                               (d.fossil_electricity + d.renewables_electricity)
+                                               *100))
+          .rename(columns = {'renewables_electricity': 'renewables',
+                             'fossil_electricity': 'fossil fuels'})
+          .melt(id_vars = ['iso_code', 'country', 'year', 'share_renewables'])
+          .dropna(subset = 'value')
+          .sort_values('share_renewables', ascending = False)
           )
+    df['country'] = df['country'].replace({'Democratic Republic of Congo': 'D.R.C',
+                                           'Sao Tome and Principe': 'Sao Tome',
+                                           'Central African Republic': 'C.A.R'})
 
-    df = df[['year', 'continent', 'share']].pivot(index='year', columns = 'continent', values = 'share').reset_index()
+    df.to_csv(f'{config.paths.output}/renewables_v_fossil.csv', index=False)
 
-    return df
-
-
-def renewable_share():
-    """ """
-    variables = ['fossil_electricity', 'renewables_electricity', 'renewables_share_elec', 'fossil_share_elec']
-    df = get_owid(urls.OWID_ENERGY_URL, variables)
-
-    return df.loc[df.country == 'Africa'].dropna(subset = variables[0:2])
-
-def renewables_country():
-    """ """
-    variables = ['renewables_share_elec', 'fossil_share_elec']
-    df = get_owid(urls.OWID_ENERGY_URL, variables)
-
-    return (df.dropna(subset = variables)
-            .drop(columns = 'country')
-            .pipe(utils.get_latest, by = 'iso_code', date_col = 'year')
-            .pipe(utils.filter_countries)
-            .melt(id_vars=['iso_code', 'year'])
-            .assign(country = lambda d: coco.convert(d.iso_code, to='name_short')))
 
 
 def sahel_population():
