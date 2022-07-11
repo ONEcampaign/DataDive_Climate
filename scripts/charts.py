@@ -26,6 +26,10 @@ def gain() -> None:
     ag = get_emp_ag()
     df['employment_agr'] = df.iso_code.map(ag.set_index('iso_code')['employment_agr'].to_dict())
 
+    #format debt distress
+    df[df.debt_distress.isin(['Low', 'Moderate'])] = np.nan
+    df.debt_distress = df.debt_distress.replace({'High': 'High risk'})
+
     df.to_csv(f'{config.paths.output}/gain.csv', index=False)
 
 
