@@ -4,7 +4,7 @@ import pandas as pd
 import country_converter as coco
 from scripts import utils, config
 from scripts.config import urls
-from scripts.download_data import get_emdat, get_ndgain_data, get_owid, get_emp_ag, get_population, get_forest_area
+from scripts.download_data import get_emdat, get_ndgain_data, get_owid, get_emp_ag, get_population, get_forest_area, get_minerals
 
 
 def gain() -> None:
@@ -204,8 +204,15 @@ def forest_africa():
 
     df.to_csv(f'{config.paths.output}/forest_area.csv', index=False)
 
+def minerals():
+    """ """
 
+    df = get_minerals()
+    df.country = df.country.replace({'Congo, D.R.': 'Congo, Dem. Rep.'})
+    df['iso_code'] = coco.convert(df.country)
+    df['continent'] = coco.convert(df.iso_code, to='continent')
 
+    df.to_csv(f'{config.paths.output}/minerals.csv', index=False)
 
 
 

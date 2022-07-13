@@ -191,3 +191,21 @@ def get_forest_area():
             .pipe(utils.add_flourish_geometries)
             )
     return df
+
+
+def get_minerals():
+    """ """
+
+    url = 'https://www.world-mining-data.info/wmd/downloads/XLS/6.5.%20Share_of_World_Mineral_Production_2020_by_Countries.xlsx'
+    columns = {'Country': 'country', 'unit':'unit', 'Production 2020':'prod_2020', 'Share in %':'share_pct'}
+    mineral_type = ['Cobalt', 'Lithium (Li2O)', 'Chromium (Cr2O3)', 'Bauxite', 'Manganese']
+
+    df = pd.DataFrame()
+    for m in mineral_type:
+        mineral_df = pd.read_excel(url, sheet_name=m, skiprows=1)
+        mineral_df = mineral_df.rename(columns = columns).loc[:, list(columns.values())].assign(mineral = m)
+
+        df = pd.concat([df, mineral_df])
+
+    df = df[df.country != 'Total']
+    return df
