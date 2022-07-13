@@ -139,7 +139,7 @@ def co2_scatter() -> None:
     df.to_csv(f'{config.paths.output}/co2_per_capita_scatter.csv', index=False)
 
 
-def electricity():
+def electricity_cooking():
     """ """
     elec = utils.get_wb_indicator('EG.ELC.ACCS.ZS').rename(columns = {'value': 'electricity'})
     cooking = utils.get_wb_indicator('EG.CFT.ACCS.ZS').rename(columns = {'value': 'cooking'})
@@ -151,9 +151,10 @@ def electricity():
      .dropna(subset = ['electricity', 'cooking'])
      .pipe(utils.add_gdp_latest, per_capita = True)
      .pipe(utils.add_pop_latest)
+    .to_csv(f'{config.paths.output}/electricity_cooking.csv', index=False)
 
      )
-    return df
+
 
 
 def renewable():
