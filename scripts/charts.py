@@ -28,7 +28,7 @@ def gain() -> None:
 
     #format debt distress
     df[df.debt_distress.isin(['Low', 'Moderate'])] = np.nan
-    df.debt_distress = df.debt_distress.replace({'High': 'High risk'})
+    df.debt_distress = df.debt_distress.replace({'High': 'High risk of debt distress'})
 
     df.to_csv(f'{config.paths.output}/gain.csv', index=False)
 
