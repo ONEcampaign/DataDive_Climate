@@ -162,19 +162,27 @@ def get_emp_ag():
 
 def get_population(variant: str = 'Medium'):
     """ """
+
     rename_countries = {'China, Hong Kong SAR': 'Hong Kong',
                         'China, Taiwan Province of China':'Taiwan',
                         'China, Macao SAR':'Macao',
                         }
 
     url = 'https://population.un.org/wpp/Download/Files/1_Indicators%20(' \
-          'Standard)/CSV_FILES/WPP2019_TotalPopulationBySex.csv '
-    df = pd.read_csv(url)
+          'Standard)/CSV_FILES/WPP2019_TotalPopulationBySex.csv'
+
+    url = "https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/CSV_FILES/WPP2022_Demographic_Indicators_Medium.zip"
+
+
+    folder = utils.unzip_folder(url)
+    df = pd.read_csv(folder.open("WPP2022_Demographic_Indicators_Medium.csv"), low_memory=False)
+    #df = pd.read_csv(url)
+
     df = (df.loc[(df.Variant == variant)&(df.Time.isin([2022, 2050]))]
           .reset_index(drop=True)
           .pipe(utils.keep_countries,  mapping_col='LocID', mapper = 'ISOnumeric')
           .replace(rename_countries)
-          .pivot(index='Location', columns='Time', values = 'PopTotal')
+          .pivot(index='Location', columns='Time', values = 'TPopulation1Jan')
           .reset_index()
           .assign(change=lambda d: ((d[2050] - d[2022]) / d[2022]) * 100)
           )

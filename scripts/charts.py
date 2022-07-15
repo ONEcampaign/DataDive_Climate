@@ -4,7 +4,7 @@ import pandas as pd
 import country_converter as coco
 from scripts import utils, config
 from scripts.config import urls
-from scripts.download_data import get_emdat, get_ndgain_data, get_owid, get_emp_ag, get_population, get_forest_area, get_minerals
+from scripts.download_data import get_emdat, get_ndgain_data, get_owid, get_emp_ag, get_forest_area, get_minerals, get_population
 
 
 def gain() -> None:
@@ -186,11 +186,15 @@ def sahel_population():
 
     df = (get_population()
           .sort_values('change', ascending=False)
-          .head(30)
+          .head(20)
           .assign(pop_2022 = lambda d: round(d[2022]/1000,0))
           .assign(pop_2050 = lambda d: round(d[2050]/1000,0))
-          .to_csv(f'{config.paths.output}/sahel_population.csv', index=False)
+
           )
+
+    df = df.astype({'pop_2022': 'int', 'pop_2050': "int"})
+    df.Location = coco.convert(df.Location, to = "name_short")
+    df.to_csv(f'{config.paths.output}/sahel_population.csv', index=False)
 
 def forest_africa():
     """ """
@@ -213,6 +217,10 @@ def minerals():
     df['continent'] = coco.convert(df.iso_code, to='continent')
 
     df.to_csv(f'{config.paths.output}/minerals.csv', index=False)
+
+
+
+
 
 
 
