@@ -23,12 +23,26 @@ def gain() -> None:
           )
 
     #add employment in agriculture
-    ag = get_emp_ag()
-    df['employment_agr'] = df.iso_code.map(ag.set_index('iso_code')['employment_agr'].to_dict())
+    #ag = get_emp_ag()
+    #df['employment_agr'] = df.iso_code.map(ag.set_index('iso_code')['employment_agr'].to_dict())
 
     #format debt distress
     df[df.debt_distress.isin(['Low', 'Moderate'])] = np.nan
     df.debt_distress = df.debt_distress.replace({'High': 'High risk of debt distress'})
+
+    df = (df.sort_values(by = 'gain', ascending = False)
+          .reset_index(drop=True)
+          .assign(rank = lambda d: d.index + 1))
+
+    df = df[['gain', 'vulnerability', 'readiness', 'population', 'country',
+             'continent', 'Low income', 'Africa', 'debt_distress', 'rank']]
+
+    df = (df.assign(pop_annotation = lambda d: round(d.population/1e6, 2))
+          .assign(gain = lambda d: round(d.gain, 1))
+          .assign(pop_vulnerability = lambda d: round(d.vulnerability, 2))
+          .assign(pop_readiness = lambda d: round(d.readiness, 2)))
+
+
 
     df.to_csv(f'{config.paths.output}/gain.csv', index=False)
 
@@ -146,12 +160,18 @@ def electricity_cooking():
 
     df = pd.merge(elec, cooking, on = ['iso_code', 'country_name', 'year'], how='inner')
 
-    df = (df.pipe(utils.get_latest, by='iso_code', date_col='year')
-    .pipe(utils.get_latest, by = ['iso_code', 'country_name'], date_col = 'year')
+    (df.pipe(utils.get_latest, by='iso_code', date_col='year')
+     .pipe(utils.get_latest, by = ['iso_code', 'country_name'], date_col = 'year')
      .dropna(subset = ['electricity', 'cooking'])
      .pipe(utils.add_gdp_latest, per_capita = True)
      .pipe(utils.add_pop_latest)
-    .to_csv(f'{config.paths.output}/electricity_cooking.csv', index=False)
+    .pipe(utils.keep_countries)
+    .assign(continent = lambda d: coco.convert(d.iso_code, to='continent'))
+     .assign(pop_annotation = lambda d: round(d.population/1e6, 2))
+     .assign(electricity= lambda d: round(d.electricity, 2))
+     .assign(cooking= lambda d: round(d.cooking, 2))
+     .assign(gdp_per_capita = lambda d: round(d.gdp_per_capita, 2))
+     .to_csv(f'{config.paths.output}/electricity_cooking.csv', index=False)
 
      )
 
