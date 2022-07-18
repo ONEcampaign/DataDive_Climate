@@ -206,7 +206,7 @@ def get_minerals():
 
     url = 'https://www.world-mining-data.info/wmd/downloads/XLS/6.5.%20Share_of_World_Mineral_Production_2020_by_Countries.xlsx'
     columns = {'Country': 'country', 'unit':'unit', 'Production 2020':'prod_2020', 'Share in %':'share_pct'}
-    mineral_type = ['Cobalt', 'Lithium (Li2O)', 'Chromium (Cr2O3)', 'Bauxite', 'Manganese']
+    mineral_type = ['Cobalt', 'Copper', 'Chromium (Cr2O3)', 'Manganese', 'Platinum', 'Aluminium', 'Lithium (Li2O)']
 
     df = pd.DataFrame()
     for m in mineral_type:
