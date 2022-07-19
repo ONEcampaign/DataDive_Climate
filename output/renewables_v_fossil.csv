@@ -1,0 +1,111 @@
+iso_code,country,year,share_renewables,variable,value
+LSO,Lesotho,2020,100.0,fossil fuels,0.0
+CAF,C.A.R,2020,100.0,fossil fuels,0.0
+LSO,Lesotho,2020,100.0,renewables,0.5
+CAF,C.A.R,2020,100.0,renewables,0.15
+ETH,Ethiopia,2020,99.92932862190813,fossil fuels,0.01
+ETH,Ethiopia,2020,99.92932862190813,renewables,14.14
+COD,D.R.C,2020,99.67567567567568,fossil fuels,0.03
+COD,D.R.C,2020,99.67567567567568,renewables,9.22
+NAM,Namibia,2020,96.15384615384615,renewables,1.0
+NAM,Namibia,2020,96.15384615384615,fossil fuels,0.04
+SWZ,Eswatini,2020,93.93939393939394,renewables,0.62
+SWZ,Eswatini,2020,93.93939393939394,fossil fuels,0.04
+UGA,Uganda,2020,93.79014989293361,renewables,4.38
+UGA,Uganda,2020,93.79014989293361,fossil fuels,0.29
+SLE,Sierra Leone,2020,90.47619047619048,fossil fuels,0.02
+SLE,Sierra Leone,2020,90.47619047619048,renewables,0.19
+KEN,Kenya,2021,89.15555555555555,renewables,10.03
+KEN,Kenya,2021,89.15555555555555,fossil fuels,1.22
+ZMB,Zambia,2020,87.48435544430538,fossil fuels,2.0
+ZMB,Zambia,2020,87.48435544430538,renewables,13.98
+MWI,Malawi,2020,86.70886075949367,fossil fuels,0.21
+MWI,Malawi,2020,86.70886075949367,renewables,1.37
+MOZ,Mozambique,2020,79.72222222222221,fossil fuels,3.65
+MOZ,Mozambique,2020,79.72222222222221,renewables,14.35
+GIN,Guinea,2020,76.85185185185185,renewables,2.49
+GIN,Guinea,2020,76.85185185185185,fossil fuels,0.75
+AGO,Angola,2020,70.84188911704312,fossil fuels,4.26
+AGO,Angola,2020,70.84188911704312,renewables,10.35
+ZWE,Zimbabwe,2020,67.63925729442971,renewables,7.65
+ZWE,Zimbabwe,2020,67.63925729442971,fossil fuels,3.66
+CMR,Cameroon,2020,65.99552572706935,fossil fuels,3.04
+CMR,Cameroon,2020,65.99552572706935,renewables,5.9
+LBR,Liberia,2020,63.095238095238095,fossil fuels,0.31
+LBR,Liberia,2020,63.095238095238095,renewables,0.53
+BDI,Burundi,2021,62.06896551724138,renewables,0.18
+BDI,Burundi,2021,62.06896551724138,fossil fuels,0.11
+SDN,Sudan,2020,59.38375350140056,renewables,8.48
+SDN,Sudan,2020,59.38375350140056,fossil fuels,5.8
+GAB,Gabon,2020,58.4717607973422,renewables,1.76
+GAB,Gabon,2020,58.4717607973422,fossil fuels,1.25
+RWA,Rwanda,2020,48.113207547169814,renewables,0.51
+RWA,Rwanda,2020,48.113207547169814,fossil fuels,0.55
+MDG,Madagascar,2020,43.00518134715025,renewables,0.83
+MDG,Madagascar,2020,43.00518134715025,fossil fuels,1.1
+REU,Reunion,2020,42.01954397394137,renewables,1.29
+REU,Reunion,2020,42.01954397394137,fossil fuels,1.78
+TZA,Tanzania,2020,40.56603773584905,renewables,3.01
+TZA,Tanzania,2020,40.56603773584905,fossil fuels,4.41
+GHA,Ghana,2020,38.58350951374207,renewables,7.3
+GHA,Ghana,2020,38.58350951374207,fossil fuels,11.62
+MLI,Mali,2020,35.24096385542169,fossil fuels,2.15
+MLI,Mali,2020,35.24096385542169,renewables,1.17
+COG,Congo,2020,30.99730458221024,fossil fuels,2.56
+COG,Congo,2020,30.99730458221024,renewables,1.15
+MRT,Mauritania,2020,25.683060109289613,renewables,0.47
+MRT,Mauritania,2020,25.683060109289613,fossil fuels,1.36
+CIV,Cote d'Ivoire,2020,24.245577523413115,fossil fuels,7.28
+CIV,Cote d'Ivoire,2020,24.245577523413115,renewables,2.33
+MUS,Mauritius,2020,21.8978102189781,renewables,0.6
+MUS,Mauritius,2020,21.8978102189781,fossil fuels,2.14
+NGA,Nigeria,2020,21.00954979536153,fossil fuels,23.16
+NGA,Nigeria,2020,21.00954979536153,renewables,6.16
+CPV,Cape Verde,2020,19.148936170212767,renewables,0.09
+CPV,Cape Verde,2020,19.148936170212767,fossil fuels,0.38
+MAR,Morocco,2020,17.724939205620103,fossil fuels,30.45
+MAR,Morocco,2020,17.724939205620103,renewables,6.56
+TGO,Togo,2020,16.666666666666664,fossil fuels,0.45
+TGO,Togo,2020,16.666666666666664,renewables,0.09
+SEN,Senegal,2021,13.91162029459902,fossil fuels,5.26
+SEN,Senegal,2021,13.91162029459902,renewables,0.85
+STP,Sao Tome,2020,11.111111111111112,renewables,0.01
+STP,Sao Tome,2020,11.111111111111112,fossil fuels,0.08
+GNQ,Equatorial Guinea,2020,10.619469026548673,renewables,0.12
+GNQ,Equatorial Guinea,2020,10.619469026548673,fossil fuels,1.01
+EGY,Egypt,2021,10.226788756388416,fossil fuels,168.63
+EGY,Egypt,2021,10.226788756388416,renewables,19.21
+BFA,Burkina Faso,2020,9.30232558139535,fossil fuels,1.56
+BFA,Burkina Faso,2020,9.30232558139535,renewables,0.16
+ZAF,South Africa,2021,8.806217235353628,renewables,19.15
+ZAF,South Africa,2021,8.806217235353628,fossil fuels,198.31
+ERI,Eritrea,2020,6.521739130434782,fossil fuels,0.43
+ERI,Eritrea,2020,6.521739130434782,renewables,0.03
+SOM,Somalia,2020,5.714285714285714,fossil fuels,0.33
+SOM,Somalia,2020,5.714285714285714,renewables,0.02
+BEN,Benin,2020,4.3478260869565215,fossil fuels,0.22
+BEN,Benin,2020,4.3478260869565215,renewables,0.01
+TUN,Tunisia,2021,4.066634002939736,renewables,0.83
+TUN,Tunisia,2021,4.066634002939736,fossil fuels,19.58
+NER,Niger,2020,3.4482758620689653,fossil fuels,0.56
+NER,Niger,2020,3.4482758620689653,renewables,0.02
+TCD,Chad,2020,3.3333333333333335,fossil fuels,0.29
+TCD,Chad,2020,3.3333333333333335,renewables,0.01
+DZA,Algeria,2020,1.0178781156205141,fossil fuels,75.85
+DZA,Algeria,2020,1.0178781156205141,renewables,0.78
+LBY,Libya,2020,0.031545741324921134,renewables,0.01
+LBY,Libya,2020,0.031545741324921134,fossil fuels,31.69
+COM,Comoros,2020,0.0,renewables,0.0
+SYC,Seychelles,2020,0.0,renewables,0.0
+DJI,Djibouti,2020,0.0,fossil fuels,0.06
+SYC,Seychelles,2020,0.0,fossil fuels,0.49
+SSD,South Sudan,2020,0.0,renewables,0.0
+BWA,Botswana,2020,0.0,fossil fuels,2.05
+COM,Comoros,2020,0.0,fossil fuels,0.1
+GMB,Gambia,2020,0.0,fossil fuels,0.3
+SSD,South Sudan,2020,0.0,fossil fuels,0.55
+GNB,Guinea-Bissau,2020,0.0,fossil fuels,0.08
+GMB,Gambia,2020,0.0,renewables,0.0
+DJI,Djibouti,2020,0.0,renewables,0.0
+BWA,Botswana,2020,0.0,renewables,0.0
+GNB,Guinea-Bissau,2020,0.0,renewables,0.0

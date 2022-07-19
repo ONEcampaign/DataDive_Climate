@@ -1,0 +1,189 @@
+country,unit,prod_2020,share_pct,mineral,iso_code,continent
+"Congo, Dem. Rep.",metr. t,86591,67.06761676090156,Cobalt,COD,Africa
+Russia,metr. t,9700,7.512973433506312,Cobalt,RUS,Europe
+Australia,metr. t,5630,4.360622724808303,Cobalt,AUS,Oceania
+Cuba,metr. t,4200,3.2530400433738675,Cobalt,CUB,America
+Canada,metr. t,3693,2.860351638138022,Cobalt,CAN,America
+Philippines,metr. t,3600,2.7883200371776007,Cobalt,PHL,Asia
+Papua New Guinea,metr. t,2941,2.2779025637053674,Cobalt,PNG,Oceania
+Morocco,metr. t,2416,1.8712725582836343,Cobalt,MAR,Africa
+China,metr. t,2200,1.7039733560529782,Cobalt,CHN,Asia
+New Caledonia,metr. t,2197,1.7016497560219968,Cobalt,NCL,Oceania
+Finland,metr. t,1559,1.2074974827666332,Cobalt,FIN,Europe
+Madagascar,metr. t,963,0.7458756099450081,Cobalt,MDG,Africa
+Zimbabwe,metr. t,956,0.740453876539385,Cobalt,ZWE,Africa
+South Africa,metr. t,897,0.6947564092634189,Cobalt,ZAF,Africa
+United States,metr. t,600,0.46472000619626674,Cobalt,USA,America
+Zambia,metr. t,367,0.28425373712338314,Cobalt,ZMB,Africa
+Indonesia,metr. t,350,0.27108667028115563,Cobalt,IDN,Asia
+Turkey,metr. t,250,0.19363333591511114,Cobalt,TUR,Asia
+Chile,metr. t,5733100,27.578410094147383,Copper,CHL,America
+Peru,metr. t,2150126,10.342930802199287,Copper,PER,America
+China,metr. t,1718940,8.268760748501457,Copper,CHN,Asia
+"Congo, Dem. Rep.",metr. t,1712964,8.240013896236082,Copper,COD,Africa
+United States,metr. t,1200000,5.7724602942521255,Copper,USA,America
+Russia,metr. t,924100,4.445275464931991,Copper,RUS,Europe
+Zambia,metr. t,882061,4.2430517496736035,Copper,ZMB,Africa
+Australia,metr. t,879522,4.230838185767682,Copper,AUS,Oceania
+Mexico,metr. t,800316,3.84982694404557,Copper,MEX,America
+Kazakhstan,metr. t,548760,2.639746092561497,Copper,KAZ,Asia
+Indonesia,metr. t,505200,2.4302057838801447,Copper,IDN,Asia
+Canada,metr. t,475898,2.289251924261665,Copper,CAN,America
+Poland,metr. t,392700,1.889037631294008,Copper,POL,Europe
+Brazil,metr. t,352635,1.6963096132196651,Copper,BRA,America
+Iran,metr. t,313323,1.5072038139799655,Copper,IRN,Asia
+Mongolia,metr. t,291010,1.3998697251919259,Copper,MNG,Asia
+Panama,metr. t,205548,0.9887647238024465,Copper,PAN,America
+Myanmar,metr. t,196500,0.9452403731837855,Copper,MMR,Asia
+Spain,metr. t,190300,0.9154159949968163,Copper,ESP,Europe
+Uzbekistan,metr. t,142800,0.686922775016003,Copper,UZB,Asia
+Bulgaria,metr. t,107610,0.5176453768870594,Copper,BGR,Europe
+Turkey,metr. t,107000,0.5147110429041478,Copper,TUR,Asia
+Sweden,metr. t,100065,0.48135103278694913,Copper,SWE,Europe
+Laos,metr. t,92410,0.4445275464931991,Copper,LAO,Asia
+Armenia,metr. t,83291,0.4006616586404615,Copper,ARM,Asia
+Papua New Guinea,metr. t,82841,0.3984969860301169,Copper,PNG,Oceania
+Saudi Arabia,metr. t,79060,0.3803089257196442,Copper,SAU,Asia
+Philippines,metr. t,60856,0.29274070305583944,Copper,PHL,Asia
+Serbia,metr. t,52207,0.25113569548501724,Copper,SRB,Europe
+Ecuador,metr. t,49700,0.23907606385360886,Copper,ECU,America
+Vietnam,metr. t,37990,0.1827464721488652,Copper,VNM,Asia
+Finland,metr. t,36278,0.17451109546239885,Copper,FIN,Europe
+Portugal,metr. t,32230,0.155038662736455,Copper,PRT,Europe
+Morocco,metr. t,31750,0.15272967861875414,Copper,MAR,Africa
+South Africa,metr. t,29068,0.13982822986110066,Copper,ZAF,Africa
+Mauritania,metr. t,28491,0.13705263853628108,Copper,MRT,Africa
+India,metr. t,25770,0.12396358481906439,Copper,IND,Asia
+Eritrea,metr. t,21725,0.10450558324385618,Copper,ERI,Africa
+Namibia,metr. t,15741,0.07572024790985225,Copper,NAM,Africa
+Pakistan,metr. t,13200,0.06349706323677339,Copper,PAK,Asia
+Tanzania,metr. t,11700,0.05628148786895822,Copper,TZA,Africa
+"Congo, Rep.",metr. t,10300,0.04954695085899741,Copper,COG,Africa
+Georgia,metr. t,10000,0.048103835785434375,Copper,GEO,Asia
+Colombia,metr. t,9356,0.045005948760852406,Copper,COL,America
+Romania,metr. t,9130,0.04391880207210159,Copper,ROU,Europe
+Zimbabwe,metr. t,7933,0.03816077292858509,Copper,ZWE,Africa
+North Macedonia,metr. t,6625,0.03186879120785027,Copper,MKD,Europe
+Kyrgyzstan,metr. t,6500,0.031267493260532346,Copper,KGZ,Asia
+Albania,metr. t,3070,0.014767877586128355,Copper,ALB,Europe
+Bolivia,metr. t,2822,0.013574902458649582,Copper,BOL,America
+Azerbaijan,metr. t,2591,0.012463703852006047,Copper,AZE,Asia
+Dominican Republic,metr. t,2193,0.01054917118774576,Copper,DOM,America
+"Korea, North",metr. t,2000,0.009620767157086875,Copper,PRK,Asia
+Tajikistan,metr. t,1000,0.004810383578543438,Copper,TJK,Asia
+Germany,metr. t,37,0.0001779841924061072,Copper,DEU,Europe
+Slovakia,metr. t,20,9.620767157086875e-05,Copper,SVK,Europe
+South Africa,metr. t,5442500,45.48690503671464,Chromium (Cr2O3),ZAF,Africa
+Kazakhstan,metr. t,1977900,16.530739452846646,Chromium (Cr2O3),KAZ,Asia
+India,metr. t,1335400,11.160902707584516,Chromium (Cr2O3),IND,Asia
+Turkey,metr. t,1087400,9.088187512526137,Chromium (Cr2O3),TUR,Asia
+Zimbabwe,metr. t,572460,4.7844618571093545,Chromium (Cr2O3),ZWE,Africa
+Finland,metr. t,480870,4.018978047773076,Chromium (Cr2O3),FIN,Europe
+Brazil,metr. t,226762,1.8952138833138235,Chromium (Cr2O3),BRA,America
+Albania,metr. t,212650,1.777269702536953,Chromium (Cr2O3),ALB,Europe
+Russia,metr. t,187000,1.5628941188545038,Chromium (Cr2O3),RUS,Europe
+Oman,metr. t,152840,1.2773943161803334,Chromium (Cr2O3),OMN,Asia
+Iran,metr. t,103340,0.8636870494247295,Chromium (Cr2O3),IRN,Asia
+Papua New Guinea,metr. t,52700,0.4404519789499056,Chromium (Cr2O3),PNG,Oceania
+Pakistan,metr. t,48570,0.405934584774135,Chromium (Cr2O3),PAK,Asia
+China,metr. t,31950,0.2670292358149807,Chromium (Cr2O3),CHN,Asia
+Philippines,metr. t,14040,0.11734242475249858,Chromium (Cr2O3),PHL,Asia
+Cuba,metr. t,14000,0.1170081158500698,Chromium (Cr2O3),CUB,America
+Greece,metr. t,12000,0.10029267072863127,Chromium (Cr2O3),GRC,Europe
+Madagascar,metr. t,6100,0.05098210762038756,Chromium (Cr2O3),MDG,Africa
+Sudan,metr. t,4300,0.03593820701109287,Chromium (Cr2O3),SDN,Africa
+Afghanistan,metr. t,2000,0.016715445121438542,Chromium (Cr2O3),AFG,Asia
+Ethiopia,metr. t,200,0.0016715445121438543,Chromium (Cr2O3),ETH,Africa
+South Africa,metr. t,5983000,31.037589254468077,Manganese,ZAF,Africa
+Gabon,metr. t,3709100,19.241437791032517,Manganese,GAB,Africa
+Australia,metr. t,3356030,17.409841328041534,Manganese,AUS,Oceania
+China,metr. t,1218000,6.318533129189724,Manganese,CHN,Asia
+India,metr. t,848100,4.399628856211662,Manganese,IND,Asia
+Ghana,metr. t,825130,4.280468999087288,Manganese,GHA,Africa
+Ukraine,metr. t,698500,3.6235594341042874,Manganese,UKR,Europe
+Cote d'Ivoire,metr. t,530200,2.750481334233491,Manganese,CIV,Africa
+Brazil,metr. t,493601,2.5606192701980106,Manganese,BRA,America
+Malaysia,metr. t,362700,1.8815533382242307,Manganese,MYS,Asia
+Mexico,metr. t,258045,1.3386419386878181,Manganese,MEX,America
+Myanmar,metr. t,254000,1.3176579760379228,Manganese,MMR,Asia
+Georgia,metr. t,180900,0.9384422356900008,Manganese,GEO,Asia
+Kazakhstan,metr. t,164300,0.852327580563113,Manganese,KAZ,Asia
+Vietnam,metr. t,121000,0.6277032090574356,Manganese,VNM,Asia
+Iran,metr. t,63580,0.32982950439563435,Manganese,IRN,Asia
+Morocco,metr. t,42050,0.21813983422202618,Manganese,MAR,Africa
+Turkey,metr. t,35600,0.18467962183838602,Manganese,TUR,Asia
+Russia,metr. t,28200,0.14629116111917095,Manganese,RUS,Europe
+Indonesia,metr. t,23500,0.12190930093264246,Manganese,IDN,Asia
+Kenya,metr. t,13600,0.070551765646125,Manganese,KEN,Africa
+Zambia,metr. t,12220,0.06339283648497408,Manganese,ZMB,Africa
+Peru,metr. t,10120,0.052498813848440073,Manganese,PER,America
+Namibia,metr. t,10010,0.051928174567478766,Manganese,NAM,Africa
+Romania,metr. t,8450,0.04383547203748207,Manganese,ROU,Europe
+Senegal,metr. t,6580,0.034134604261139886,Manganese,SEN,Africa
+Nigeria,metr. t,5850,0.03034763448748759,Manganese,NGA,Africa
+Egypt,metr. t,5300,0.027494438082681066,Manganese,EGY,Africa
+Bolivia,metr. t,4710,0.024433736484797703,Manganese,BOL,America
+Oman,metr. t,2180,0.011309033022687683,Manganese,OMN,Asia
+"Congo, Dem. Rep.",metr. t,1000,0.005187629826920955,Manganese,COD,Africa
+Thailand,metr. t,670,0.0034757119840370405,Manganese,THA,Asia
+Pakistan,metr. t,400,0.002075051930768382,Manganese,PAK,Asia
+South Africa,kg,111993,67.62086475585531,Platinum,ZAF,Africa
+Russia,kg,21740,13.12651326236724,Platinum,RUS,Europe
+Zimbabwe,kg,15004,9.059347055591447,Platinum,ZWE,Africa
+Canada,kg,8360,5.047730030974707,Platinum,CAN,America
+United States,kg,4203,2.5377523110271163,Platinum,USA,America
+China,kg,2500,1.5094886456264074,Platinum,CHN,Asia
+Finland,kg,1277,0.7710468001859689,Platinum,FIN,Europe
+Colombia,kg,414,0.24997131971573308,Platinum,COL,America
+Australia,kg,100,0.0603795458250563,Platinum,AUS,Oceania
+Serbia,kg,22,0.013283500081512386,Platinum,SRB,Europe
+Poland,kg,6,0.003622772749503378,Platinum,POL,Europe
+China,metr. t,37080400,56.73987806994929,Aluminium,CHN,Asia
+Russia,metr. t,3929200,6.012403558549659,Aluminium,RUS,Europe
+India,metr. t,3619237,5.538102773601392,Aluminium,IND,Asia
+Canada,metr. t,3118710,4.772203782470835,Aluminium,CAN,America
+United Arab Emirates,metr. t,2505000,3.8331138435729653,Aluminium,ARE,Asia
+Australia,metr. t,1585017,2.4253695029934095,Aluminium,AUS,Oceania
+Bahrain,metr. t,1548500,2.3694917312466015,Aluminium,BHR,Asia
+Norway,metr. t,1330000,2.0351462722363447,Aluminium,NOR,Europe
+United States,metr. t,1026617,1.5709141056875635,Aluminium,USA,America
+Malaysia,metr. t,980700,1.5006525933700627,Aluminium,MYS,Asia
+Saudi Arabia,metr. t,796004,1.2180335137482852,Aluminium,SAU,Asia
+South Africa,metr. t,717000,1.0971427648071121,Aluminium,ZAF,Africa
+Iceland,metr. t,691989,1.0588713035928992,Aluminium,ISL,Europe
+Brazil,metr. t,685100,1.048329857976782,Aluminium,BRA,America
+Qatar,metr. t,631400,0.9661589145037806,Aluminium,QAT,Asia
+Mozambique,metr. t,571125,0.8739270035571296,Aluminium,MOZ,Africa
+Germany,metr. t,529056,0.8095536437626103,Aluminium,DEU,Europe
+Iran,metr. t,424475,0.6495253488026485,Aluminium,IRN,Asia
+Oman,metr. t,396929,0.6073748681898496,Aluminium,OMN,Asia
+France,metr. t,385240,0.5894885337716763,Aluminium,FRA,Europe
+New Zealand,metr. t,333314,0.5100321387851016,Aluminium,NZL,Oceania
+Argentina,metr. t,309804,0.4740574855066982,Aluminium,ARG,America
+Romania,metr. t,271307,0.4151499471290421,Aluminium,ROU,Europe
+Egypt,metr. t,268000,0.41008962478145894,Aluminium,EGY,Africa
+Kazakhstan,metr. t,265665,0.40651664241629215,Aluminium,KAZ,Asia
+Indonesia,metr. t,220089,0.3367769232407706,Aluminium,IDN,Asia
+Spain,metr. t,200000,0.30603703341899924,Aluminium,ESP,Europe
+Greece,metr. t,181900,0.2783406818945798,Aluminium,GRC,Europe
+Slovakia,metr. t,151875,0.23239687225255254,Aluminium,SVK,Europe
+Sweden,metr. t,117000,0.17903166455011454,Aluminium,SWE,Europe
+Tajikistan,metr. t,84000,0.12853555403597966,Aluminium,TJK,Asia
+Turkey,metr. t,79600,0.12180273930076169,Aluminium,TUR,Asia
+Netherlands,metr. t,70600,0.10803107279690673,Aluminium,NLD,Europe
+Slovenia,metr. t,50185,0.07679234261066238,Aluminium,SVN,Europe
+Cameroon,metr. t,47500,0.07268379543701231,Aluminium,CMR,Africa
+Ghana,metr. t,37566,0.05748293598709062,Aluminium,GHA,Africa
+Montenegro,metr. t,37208,0.05693512969727062,Aluminium,MNE,Europe
+United Kingdom,metr. t,35700,0.05462761046529136,Aluminium,GBR,Europe
+Azerbaijan,metr. t,28560,0.043702088372233085,Aluminium,AZE,Asia
+Venezuela,metr. t,9996,0.015295730930281581,Aluminium,VEN,America
+Australia,metr. t,88550,47.64595103578154,Lithium (Li2O),AUS,Oceania
+Chile,metr. t,49730,26.758138283562012,Lithium (Li2O),CHL,America
+China,metr. t,28800,15.49636803874092,Lithium (Li2O),CHN,Asia
+Argentina,metr. t,12620,6.790422383642722,Lithium (Li2O),ARG,America
+Brazil,metr. t,3710,1.9962335216572504,Lithium (Li2O),BRA,America
+United States,metr. t,1220,0.656443368307775,Lithium (Li2O),USA,America
+Zimbabwe,metr. t,860,0.4627387678235136,Lithium (Li2O),ZWE,Africa
+Portugal,metr. t,280,0.15065913370998116,Lithium (Li2O),PRT,Europe
+Bolivia,metr. t,80,0.04304546677428033,Lithium (Li2O),BOL,America

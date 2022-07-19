@@ -46,6 +46,17 @@ def add_flourish_geometries(
     return pd.merge(g, df, on=key_column_name, how="left")
 
 
+def highlight_category(df: pd.DataFrame, column:str, keep_value:str, new_column:bool= False):
+    """ """
+
+    if new_column:
+        df[keep_value] = df[column]
+        df.loc[df[keep_value] != keep_value, keep_value] = np.nan
+    else:
+        df.loc[df[column] != keep_value, column] = np.nan
+
+    return df
+
 def remove_unnamed_cols(df: pd.DataFrame) -> pd.DataFrame:
     """removes all columns with 'Unnamed'"""
 
@@ -61,25 +72,24 @@ def clean_numeric_column(column: pd.Series) -> pd.Series:
     return column
 
 
-def get_latest_values(
-        df: pd.DataFrame, grouping_col: str, date_col: str
+def get_latest(
+        df: pd.DataFrame, by: list | str, date_col: str = "date"
 ) -> pd.DataFrame:
-    """returns a dataframe with only latest values per group"""
+    """Get the latest value, grouping by columns specified in 'by'"""
+    if isinstance(by, str):
+        by = [by]
+    return df.sort_values(by=by + [date_col]).groupby(by, as_index=False).last()
 
-    return df.loc[
-        df.groupby(grouping_col)[date_col].transform(max) == df[date_col]
-        ].reset_index(drop=True)
 
-
-def keep_countries(df: pd.DataFrame, iso_col: str = "iso_code") -> pd.DataFrame:
+def keep_countries(df: pd.DataFrame, mapping_col: str = "iso_code", mapper = 'ISO3') -> pd.DataFrame:
     """returns a dataframe with only countries"""
 
     cc = coco.CountryConverter()
-    return df[df[iso_col].isin(cc.data["ISO3"])].reset_index(drop=True)
+    return df[df[mapping_col].isin(cc.data[mapper])].reset_index(drop=True)
 
 
 def filter_countries(
-        df: pd.DataFrame, by: str, values: list = ["Africa"], iso_col: str = "iso_code"
+        df: pd.DataFrame, by: str = 'continent', values: list = ["Africa"], iso_col: str = "iso_code"
 ) -> pd.DataFrame:
     """
     returns a filtered dataframe
@@ -168,6 +178,50 @@ def get_wb_indicator(code: str, database: int = 2) -> pd.DataFrame:
 
     return df
 
+def get_pop():
+    """ """
+
+    df = get_wb_indicator('SP.POP.TOTL')
+
+    return (df
+            .dropna(subset='value')
+            .reset_index(drop=True))
+            #.pipe(get_latest, ['iso_code', 'country_name'], date_col='year'))
+
+def get_pop_latest():
+    """ """
+
+    return get_pop().pipe(get_latest, ['iso_code', 'country_name'], date_col='year')
+
+def add_pop_latest(df: pd.DataFrame, iso_col = 'iso_code') -> pd.DataFrame:
+    """ """
+
+    pop = get_pop_latest().set_index('iso_code')['value'].to_dict()
+    df['population'] = df[iso_col].map(pop)
+
+    return df
+
+def per_capita(df: pd.DataFrame, target_col: str, new_column = True, percent = False, iso_col = 'iso_code') -> pd.DataFrame:
+    """standardize a column by population"""
+
+    df = add_pop_latest(df, iso_col)
+    if percent:
+        calc_series =  (df[target_col]/df['population'])*100
+    else:
+        calc_series =  df[target_col]/df['population']
+
+    if new_column:
+        df[target_col + '_per_capita'] = calc_series
+    else:
+        df[target_col] = calc_series
+
+    return df.drop(columns='population')
+
+
+
+
+
+
 
 # ==========================================
 # IMF WEO
@@ -222,9 +276,7 @@ def _clean_weo(df: pd.DataFrame) -> pd.DataFrame:
     )
 
 
-def get_weo_indicator_latest(
-        indicator: str, target_year: int = 2022, *, min_year: int = 2018
-) -> pd.DataFrame:
+def get_weo_indicator(indicator: str) -> pd.DataFrame:
     """
     Retrieves values for an indicator for a target year
     """
@@ -235,17 +287,23 @@ def get_weo_indicator_latest(
         df.pipe(_clean_weo)
             .dropna(subset=["value"])
             .loc[
-            lambda d: (d.indicator == indicator)
-                      & (d.year >= min_year)
-                      & (d.year <= target_year),
+            lambda d: (d.indicator == indicator),
             ["iso_code", "year", "value"],
         ]
             .reset_index(drop=True)
     )
-    return df.loc[
-        df.groupby(["iso_code"])["year"].transform(max) == df["year"],
-        ["iso_code", "value"],
-    ]
+
+    return df
+
+def get_weo_indicator_latest(indicator: str, target_year: int = 2022, *, min_year: int = 2018) -> pd.DataFrame:
+    """ """
+
+    df = get_weo_indicator(indicator)
+    df = df.loc[(df.year>=min_year)&(df.year<=target_year)]
+    df = get_latest(df, by='iso_code', date_col='year')
+
+    return df
+    #return (df.loc[df.groupby(["iso_code"])["year"].transform(max) == df["year"],["iso_code", "value"]])
 
 
 def get_gdp_latest(per_capita: bool = False, year: int = 2022) -> pd.DataFrame:
@@ -254,9 +312,9 @@ def get_gdp_latest(per_capita: bool = False, year: int = 2022) -> pd.DataFrame:
         set per_capita = True to return gdp per capita values
     """
     if per_capita:
-        return get_weo_indicator_latest(target_year=year, indicator="NGDPDPC")
+        return get_weo_indicator_latest(target_year=year, indicator="NGDPDPC")[["iso_code", "value"]]
     else:
-        return get_weo_indicator_latest(target_year=year, indicator="NGDPD").assign(
+        return get_weo_indicator_latest(target_year=year, indicator="NGDPD")[["iso_code", "value"]].assign(
             value=lambda d: d.value * 1e9
         )
 
