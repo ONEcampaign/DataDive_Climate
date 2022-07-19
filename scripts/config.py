@@ -3,6 +3,7 @@
 import os
 
 class Paths:
+    """File paths"""
 
     def __init__(self, project_dir):
         self.project_dir = project_dir
@@ -26,6 +27,7 @@ class Paths:
 paths = Paths(os.path.dirname(os.path.dirname(__file__)))
 
 class Urls:
+    """Source urls"""
 
     @property
     def OWID_CO2_URL(self):
