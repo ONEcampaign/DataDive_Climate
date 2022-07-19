@@ -35,6 +35,22 @@ class Urls:
     def OWID_ENERGY_URL(self):
         return 'https://raw.githubusercontent.com/owid/energy-data/master/owid-energy-data.csv'
 
+    @property
+    def UN_POP_PROSPECTS(self):
+        return "https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/CSV_FILES/WPP2022_Demographic_Indicators_Medium.zip"
+
+    @property
+    def MINERALS(self):
+        return "https://www.world-mining-data.info/wmd/downloads/XLS/6.5.%20Share_of_World_Mineral_Production_2020_by_Countries.xlsx"
+
+    @property
+    def ND_GAIN(self):
+        return "https://gain.nd.edu/assets/437409/resources.zip"
+
+    @property
+    def TEMPERATURE(self):
+        return 'https://data.giss.nasa.gov/gistemp/tabledata_v4/GLB.Ts+dSST.csv'
+
 urls = Urls()
 
 CLIMATE_EVENTS = ['Drought', 'Storm', 'Flood']  # 'Wildfire', 'Extreme temperature ', 'Insect infestation'

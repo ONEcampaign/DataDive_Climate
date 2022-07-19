@@ -3,15 +3,9 @@
 import pandas as pd
 from typing import Optional
 from scripts import utils, config
-import country_converter as coco
 from zipfile import ZipFile
 import numpy as np
 import statsmodels.api as sm
-
-
-# ====================================================
-# Our World In Data - CO2 and Greenhouse gas emissions
-# ====================================================
 
 
 def get_owid(url: str, indicators: Optional[list] = None):
@@ -33,17 +27,10 @@ def get_owid(url: str, indicators: Optional[list] = None):
         return df
 
 
-# ===========================================
-# Disaster events database
-# ============================================
-
-
 def _clean_emdat(df: pd.DataFrame, start_year=2000) -> pd.DataFrame:
     """Cleaning function for EMDAT"""
 
     columns = {'Year': 'year', 'Disaster Type': 'disaster_type', 'ISO': 'iso_code', 'Total Affected': 'total_affected'}
-
-    # 'Region':'region','Start Year': 'start_year', 'Start Month': 'start_month', 'Start Day': 'start_day','End Year': 'end_year', 'End Month': 'end_month', 'End Day': 'end_day',
 
     df = (df[columns.keys()]
           .rename(columns=columns)
@@ -68,10 +55,6 @@ def get_emdat(*, start_year: Optional[int] = 2000) -> pd.DataFrame:
     return df
 
 
-# ==========================================================
-# ND-GAIN
-# ==========================================================
-
 def _clean_ndgain(df: pd.DataFrame, index_name: str) -> pd.DataFrame:
     """returns a clean dataframe with latest year data"""
 
@@ -94,8 +77,7 @@ def read_ndgain_index(folder: ZipFile, index: str, path: str):
 def get_ndgain_data():
     """pipeline to extract all relevant nd-gain data"""
 
-    url = 'https://gain.nd.edu/assets/437409/resources.zip'
-    folder = utils.unzip_folder(url)
+    folder = utils.unzip_folder(config.urls.ND_GAIN)
 
     df = read_ndgain_index(folder, 'gain', 'resources/gain/')  # get main gain index
 
@@ -126,9 +108,8 @@ def get_global_temp(lowess_frac: float = 0.25) -> pd.DataFrame:
 
     """
 
-    url = 'https://data.giss.nasa.gov/gistemp/tabledata_v4/GLB.Ts+dSST.csv'
     try:
-        df = pd.read_csv(url, skiprows=1)
+        df = pd.read_csv(config.urls.TEMPERATURE, skiprows=1)
     except ConnectionError:
         raise ConnectionError('Could not read NASA GISS data')
 
@@ -143,23 +124,6 @@ def get_global_temp(lowess_frac: float = 0.25) -> pd.DataFrame:
                                            return_sorted=False, frac=lowess_frac)
     return df
 
-
-def get_emp_ag():
-    """ """
-
-    df = utils.get_wb_indicator('SL.AGR.EMPL.ZS')
-    return (df
-            .dropna(subset='value')
-            .drop(columns='country_name')
-            .pipe(utils.get_latest, by='iso_code', date_col='year')
-            .rename(columns={'value': 'employment_agr'})
-            .drop(columns='year')
-
-            )
-
-
-# population
-
 def get_population(variant: str = 'Medium'):
     """ """
 
@@ -168,15 +132,8 @@ def get_population(variant: str = 'Medium'):
                         'China, Macao SAR':'Macao',
                         }
 
-    url = 'https://population.un.org/wpp/Download/Files/1_Indicators%20(' \
-          'Standard)/CSV_FILES/WPP2019_TotalPopulationBySex.csv'
-
-    url = "https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/CSV_FILES/WPP2022_Demographic_Indicators_Medium.zip"
-
-
-    folder = utils.unzip_folder(url)
+    folder = utils.unzip_folder(config.urls.UN_POP_PROSPECTS)
     df = pd.read_csv(folder.open("WPP2022_Demographic_Indicators_Medium.csv"), low_memory=False)
-    #df = pd.read_csv(url)
 
     df = (df.loc[(df.Variant == variant)&(df.Time.isin([2022, 2050]))]
           .reset_index(drop=True)
@@ -204,13 +161,13 @@ def get_forest_area():
 def get_minerals():
     """ """
 
-    url = 'https://www.world-mining-data.info/wmd/downloads/XLS/6.5.%20Share_of_World_Mineral_Production_2020_by_Countries.xlsx'
+    #url = 'https://www.world-mining-data.info/wmd/downloads/XLS/6.5.%20Share_of_World_Mineral_Production_2020_by_Countries.xlsx'
     columns = {'Country': 'country', 'unit':'unit', 'Production 2020':'prod_2020', 'Share in %':'share_pct'}
     mineral_type = ['Cobalt', 'Copper', 'Chromium (Cr2O3)', 'Manganese', 'Platinum', 'Aluminium', 'Lithium (Li2O)']
 
     df = pd.DataFrame()
     for m in mineral_type:
-        mineral_df = pd.read_excel(url, sheet_name=m, skiprows=1)
+        mineral_df = pd.read_excel(config.urls.MINERALS, sheet_name=m, skiprows=1)
         mineral_df = mineral_df.rename(columns = columns).loc[:, list(columns.values())].assign(mineral = m)
 
         df = pd.concat([df, mineral_df])
