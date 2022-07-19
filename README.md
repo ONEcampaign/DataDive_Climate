@@ -18,7 +18,8 @@ Maintainers:
 - UN World Population Prospects
 - World Mining Data
 
-Repository Structure and Information
+### Repository Structure and Information
+
 In order to reproduce this analysis, Python (>= 3.10) is needed. 
 Other packages are listed in requirements.txt. 
 The repository includes the following sub-folders:
@@ -33,7 +34,7 @@ visualizations.
 `utils.py` contains utility functions and 
 `config.py` manages file paths to different folders and source urls.
 
-### Manually downloaded data
+#### Manually downloaded data
 
 Data from the International Disaster Database (EM-DAT) from
 CRED needs to be manually downloaded from the
