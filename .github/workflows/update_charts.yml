@@ -1,0 +1,36 @@
+name: Update Charts
+'on':
+  schedule:
+    - cron: '0 10 * * *'
+  workflow_dispatch:
+env:
+  IPC_WEB_API: ${{ secrets.IPC_WEB_API }}
+  IPC_API: ${{ secrets.IPC_API }}
+jobs:
+  update_data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repo content
+        uses: actions/checkout@v3
+      - name: setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run:  |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Execute Update Script
+        run:
+          python charts.py
+      - name: save-changes
+        run:  |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Updated commodity database"
+      - name: push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}

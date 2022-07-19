@@ -2,6 +2,7 @@
 
 import os
 
+
 class Paths:
     """File paths"""
 
@@ -24,18 +25,22 @@ class Paths:
     def glossaries(self):
         return os.path.join(self.project_dir, "glossaries")
 
+
 paths = Paths(os.path.dirname(os.path.dirname(__file__)))
+
 
 class Urls:
     """Source urls"""
 
     @property
     def OWID_CO2_URL(self):
-        return 'https://raw.githubusercontent.com/owid/co2-data/master/owid-co2-data.csv'
+        return (
+            "https://raw.githubusercontent.com/owid/co2-data/master/owid-co2-data.csv"
+        )
 
     @property
     def OWID_ENERGY_URL(self):
-        return 'https://raw.githubusercontent.com/owid/energy-data/master/owid-energy-data.csv'
+        return "https://raw.githubusercontent.com/owid/energy-data/master/owid-energy-data.csv"
 
     @property
     def UN_POP_PROSPECTS(self):
@@ -51,8 +56,13 @@ class Urls:
 
     @property
     def TEMPERATURE(self):
-        return 'https://data.giss.nasa.gov/gistemp/tabledata_v4/GLB.Ts+dSST.csv'
+        return "https://data.giss.nasa.gov/gistemp/tabledata_v4/GLB.Ts+dSST.csv"
+
 
 urls = Urls()
 
-CLIMATE_EVENTS = ['Drought', 'Storm', 'Flood']  # 'Wildfire', 'Extreme temperature ', 'Insect infestation'
+CLIMATE_EVENTS = [
+    "Drought",
+    "Storm",
+    "Flood",
+]  # 'Wildfire', 'Extreme temperature ', 'Insect infestation'
