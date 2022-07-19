@@ -27,7 +27,7 @@ def unzip_folder(url) -> ZipFile:
 
 
 def add_flourish_geometries(
-        df: pd.DataFrame, key_column_name: str = "iso_code"
+    df: pd.DataFrame, key_column_name: str = "iso_code"
 ) -> pd.DataFrame:
     """
     Adds a geometry column to a dataframe based on iso3 code
@@ -38,15 +38,17 @@ def add_flourish_geometries(
     g = pd.read_json(f"{config.paths.glossaries}/flourish_geometries_world.json")
     g = (
         g.rename(columns={g.columns[0]: "flourish_geom", g.columns[1]: key_column_name})
-            .iloc[1:]
-            .drop_duplicates(subset=key_column_name, keep="first")
-            .reset_index(drop=True)
+        .iloc[1:]
+        .drop_duplicates(subset=key_column_name, keep="first")
+        .reset_index(drop=True)
     )
 
     return pd.merge(g, df, on=key_column_name, how="left")
 
 
-def highlight_category(df: pd.DataFrame, column:str, keep_value:str, new_column:bool= False):
+def highlight_category(
+    df: pd.DataFrame, column: str, keep_value: str, new_column: bool = False
+):
     """ """
 
     if new_column:
@@ -56,6 +58,7 @@ def highlight_category(df: pd.DataFrame, column:str, keep_value:str, new_column:
         df.loc[df[column] != keep_value, column] = np.nan
 
     return df
+
 
 def remove_unnamed_cols(df: pd.DataFrame) -> pd.DataFrame:
     """removes all columns with 'Unnamed'"""
@@ -73,7 +76,7 @@ def clean_numeric_column(column: pd.Series) -> pd.Series:
 
 
 def get_latest(
-        df: pd.DataFrame, by: list | str, date_col: str = "date"
+    df: pd.DataFrame, by: list | str, date_col: str = "date"
 ) -> pd.DataFrame:
     """Get the latest value, grouping by columns specified in 'by'"""
     if isinstance(by, str):
@@ -81,7 +84,9 @@ def get_latest(
     return df.sort_values(by=by + [date_col]).groupby(by, as_index=False).last()
 
 
-def keep_countries(df: pd.DataFrame, mapping_col: str = "iso_code", mapper = 'ISO3') -> pd.DataFrame:
+def keep_countries(
+    df: pd.DataFrame, mapping_col: str = "iso_code", mapper="ISO3"
+) -> pd.DataFrame:
     """returns a dataframe with only countries"""
 
     cc = coco.CountryConverter()
@@ -89,7 +94,10 @@ def keep_countries(df: pd.DataFrame, mapping_col: str = "iso_code", mapper = 'IS
 
 
 def filter_countries(
-        df: pd.DataFrame, by: str = 'continent', values: list = ["Africa"], iso_col: str = "iso_code"
+    df: pd.DataFrame,
+    by: str = "continent",
+    values: list = ["Africa"],
+    iso_col: str = "iso_code",
 ) -> pd.DataFrame:
     """
     returns a filtered dataframe
@@ -178,49 +186,52 @@ def get_wb_indicator(code: str, database: int = 2) -> pd.DataFrame:
 
     return df
 
+
 def get_pop():
     """ """
 
-    df = get_wb_indicator('SP.POP.TOTL')
+    df = get_wb_indicator("SP.POP.TOTL")
 
-    return (df
-            .dropna(subset='value')
-            .reset_index(drop=True))
-            #.pipe(get_latest, ['iso_code', 'country_name'], date_col='year'))
+    return df.dropna(subset="value").reset_index(drop=True)
+    # .pipe(get_latest, ['iso_code', 'country_name'], date_col='year'))
+
 
 def get_pop_latest():
     """ """
 
-    return get_pop().pipe(get_latest, ['iso_code', 'country_name'], date_col='year')
+    return get_pop().pipe(get_latest, ["iso_code", "country_name"], date_col="year")
 
-def add_pop_latest(df: pd.DataFrame, iso_col = 'iso_code') -> pd.DataFrame:
+
+def add_pop_latest(df: pd.DataFrame, iso_col="iso_code") -> pd.DataFrame:
     """ """
 
-    pop = get_pop_latest().set_index('iso_code')['value'].to_dict()
-    df['population'] = df[iso_col].map(pop)
+    pop = get_pop_latest().set_index("iso_code")["value"].to_dict()
+    df["population"] = df[iso_col].map(pop)
 
     return df
 
-def per_capita(df: pd.DataFrame, target_col: str, new_column = True, percent = False, iso_col = 'iso_code') -> pd.DataFrame:
+
+def per_capita(
+    df: pd.DataFrame,
+    target_col: str,
+    new_column=True,
+    percent=False,
+    iso_col="iso_code",
+) -> pd.DataFrame:
     """standardize a column by population"""
 
     df = add_pop_latest(df, iso_col)
     if percent:
-        calc_series =  (df[target_col]/df['population'])*100
+        calc_series = (df[target_col] / df["population"]) * 100
     else:
-        calc_series =  df[target_col]/df['population']
+        calc_series = df[target_col] / df["population"]
 
     if new_column:
-        df[target_col + '_per_capita'] = calc_series
+        df[target_col + "_per_capita"] = calc_series
     else:
         df[target_col] = calc_series
 
-    return df.drop(columns='population')
-
-
-
-
-
+    return df.drop(columns="population")
 
 
 # ==========================================
@@ -264,15 +275,15 @@ def _clean_weo(df: pd.DataFrame) -> pd.DataFrame:
     ]
     return (
         df.drop(cols_to_drop, axis=1)
-            .rename(columns=columns)
-            .melt(id_vars=columns.values(), var_name="year", value_name="value")
-            .assign(
+        .rename(columns=columns)
+        .melt(id_vars=columns.values(), var_name="year", value_name="value")
+        .assign(
             value=lambda d: d.value.map(
                 lambda x: str(x).replace(",", "").replace("-", "")
             )
         )
-            .astype({"year": "int32"})
-            .assign(value=lambda d: pd.to_numeric(d.value, errors="coerce"))
+        .astype({"year": "int32"})
+        .assign(value=lambda d: pd.to_numeric(d.value, errors="coerce"))
     )
 
 
@@ -285,25 +296,28 @@ def get_weo_indicator(indicator: str) -> pd.DataFrame:
 
     df = (
         df.pipe(_clean_weo)
-            .dropna(subset=["value"])
-            .loc[
+        .dropna(subset=["value"])
+        .loc[
             lambda d: (d.indicator == indicator),
             ["iso_code", "year", "value"],
         ]
-            .reset_index(drop=True)
+        .reset_index(drop=True)
     )
 
     return df
 
-def get_weo_indicator_latest(indicator: str, target_year: int = 2022, *, min_year: int = 2018) -> pd.DataFrame:
+
+def get_weo_indicator_latest(
+    indicator: str, target_year: int = 2022, *, min_year: int = 2018
+) -> pd.DataFrame:
     """ """
 
     df = get_weo_indicator(indicator)
-    df = df.loc[(df.year>=min_year)&(df.year<=target_year)]
-    df = get_latest(df, by='iso_code', date_col='year')
+    df = df.loc[(df.year >= min_year) & (df.year <= target_year)]
+    df = get_latest(df, by="iso_code", date_col="year")
 
     return df
-    #return (df.loc[df.groupby(["iso_code"])["year"].transform(max) == df["year"],["iso_code", "value"]])
+    # return (df.loc[df.groupby(["iso_code"])["year"].transform(max) == df["year"],["iso_code", "value"]])
 
 
 def get_gdp_latest(per_capita: bool = False, year: int = 2022) -> pd.DataFrame:
@@ -312,15 +326,17 @@ def get_gdp_latest(per_capita: bool = False, year: int = 2022) -> pd.DataFrame:
         set per_capita = True to return gdp per capita values
     """
     if per_capita:
-        return get_weo_indicator_latest(target_year=year, indicator="NGDPDPC")[["iso_code", "value"]]
+        return get_weo_indicator_latest(target_year=year, indicator="NGDPDPC")[
+            ["iso_code", "value"]
+        ]
     else:
-        return get_weo_indicator_latest(target_year=year, indicator="NGDPD")[["iso_code", "value"]].assign(
-            value=lambda d: d.value * 1e9
-        )
+        return get_weo_indicator_latest(target_year=year, indicator="NGDPD")[
+            ["iso_code", "value"]
+        ].assign(value=lambda d: d.value * 1e9)
 
 
 def add_gdp_latest(
-        df: pd.DataFrame, iso_col: str = "iso_code", per_capita=False, year: int = 2022
+    df: pd.DataFrame, iso_col: str = "iso_code", per_capita=False, year: int = 2022
 ) -> pd.DataFrame:
     """adds a column with latest gdp values to a dataframe"""
 
@@ -337,10 +353,10 @@ def add_gdp_latest(
     return df
 
 
-
 # ==============================================
 # Debt distress
 # ==============================================
+
 
 def __download_pdf(url: str, local_path: str) -> None:
     """Downloads the a pdf to the file"""
@@ -351,6 +367,7 @@ def __download_pdf(url: str, local_path: str) -> None:
             f.write(response.content)
     except ConnectionError:
         raise ConnectionError("Could not download PDF")
+
 
 def __pdf_to_df(local_path: str) -> pd.DataFrame:
     """Reads a pdf and returns a dataframe"""
@@ -371,13 +388,14 @@ def __clean_df(df: pd.DataFrame) -> pd.DataFrame:
 
     return (
         df.filter([0, 2], axis=1)
-            .rename(columns={0: "country", 2: "debt_distress"})
-            .assign(iso_code=lambda d: coco.convert(d.country))
-            .loc[lambda d: d.iso_code != "not found"]
-            .reset_index(drop=True)
-            .filter(["iso_code", "debt_distress"], axis=1)
-            .replace({"…": np.nan, "": np.nan})
+        .rename(columns={0: "country", 2: "debt_distress"})
+        .assign(iso_code=lambda d: coco.convert(d.country))
+        .loc[lambda d: d.iso_code != "not found"]
+        .reset_index(drop=True)
+        .filter(["iso_code", "debt_distress"], axis=1)
+        .replace({"…": np.nan, "": np.nan})
     )
+
 
 def get_debt_distress():
     """Downloads and reads debt distress"""
@@ -386,16 +404,15 @@ def get_debt_distress():
     pdf_path = f"{config.paths.raw_data}/dsa.pdf"
 
     __download_pdf(url, pdf_path)
-    df = (__pdf_to_df(pdf_path)
-          .pipe(__clean_df))
+    df = __pdf_to_df(pdf_path).pipe(__clean_df)
 
     return df
 
-def add_debt_distress(df: pd.DataFrame, iso_col:str = 'iso_code') -> pd.DataFrame:
+
+def add_debt_distress(df: pd.DataFrame, iso_col: str = "iso_code") -> pd.DataFrame:
     """Add debt distress to a dataframe"""
 
-    debt_distress = (get_debt_distress().set_index(iso_col).to_dict())
-    return df.assign(debt_distress=lambda d: d[iso_col].map(debt_distress['debt_distress']))
-
-
-
+    debt_distress = get_debt_distress().set_index(iso_col).to_dict()
+    return df.assign(
+        debt_distress=lambda d: d[iso_col].map(debt_distress["debt_distress"])
+    )
