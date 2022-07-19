@@ -1,4 +1,5 @@
-""" """
+"""Functions to create charts"""
+
 import numpy as np
 import pandas as pd
 import country_converter as coco
@@ -8,7 +9,7 @@ from scripts.download_data import get_emdat, get_ndgain_data, get_owid, get_fore
 
 
 def gain() -> None:
-    """ """
+    """Create ND-GAIN chart"""
 
     df = get_ndgain_data()
     df = (df
@@ -43,8 +44,8 @@ def gain() -> None:
     df.to_csv(f'{config.paths.output}/gain.csv', index=False)
 
 
-def co2_per_capita_continent():
-    """ """
+def co2_per_capita_continent() -> None:
+    """Create CO2 emissions per capita by continent chart"""
 
     continents = ['Asia', 'Africa', 'Oceania', 'Europe', 'North America', 'South America']
     df = get_owid(urls.OWID_CO2_URL, ['co2_per_capita'])
@@ -54,8 +55,12 @@ def co2_per_capita_continent():
      .to_csv(f'{config.paths.output}/co2_per_capita_continent.csv', index=False))
 
 
-def climate_events(start_year=2020):
-    """ """
+def climate_events(start_year=2020) -> None:
+    """Create climate event chart
+
+    Args:
+        start_year (int): starting year. Default = 2000
+    """
 
     df = get_emdat(start_year=start_year)
 
@@ -95,8 +100,9 @@ def climate_events(start_year=2020):
     dff.to_csv(f'{config.paths.output}/climate_events_africa.csv', index=False)
 
 
-def electricity_cooking():
-    """ """
+def electricity_cooking() -> None:
+    """Create scatter plot chart for access to electricity and clean cooking fuel"""
+
     elec = utils.get_wb_indicator('EG.ELC.ACCS.ZS').rename(columns = {'value': 'electricity'})
     cooking = utils.get_wb_indicator('EG.CFT.ACCS.ZS').rename(columns = {'value': 'cooking'})
 
@@ -117,9 +123,9 @@ def electricity_cooking():
 
      )
 
+def renewable() -> None:
+    """Create renewable vs fossil fuel electricity generation chart"""
 
-def renewable():
-    """ """
     variables = ['fossil_electricity', 'renewables_electricity']
     df = get_owid(urls.OWID_ENERGY_URL, variables)
 
@@ -143,8 +149,8 @@ def renewable():
 
 
 
-def sahel_population():
-    """ """
+def sahel_population() -> None:
+    """Create top population growth chart"""
 
     df = (get_population()
           .sort_values('change', ascending=False)
@@ -158,9 +164,12 @@ def sahel_population():
     df.Location = coco.convert(df.Location, to = "name_short")
     df.to_csv(f'{config.paths.output}/sahel_population.csv', index=False)
 
-def forest_congo():
-    """ """
-    congo_basin = ['CMR', 'CAF', 'COD', 'COG', 'GAB', 'GNQ']
+def forest_congo(congo_basin = ('CMR', 'CAF', 'COD', 'COG', 'GAB', 'GNQ')) -> None:
+    """Create Africa (Congo Basin) forest cover chart
+
+    Args:
+        congo_basin: (tuple): list of country iso3 codes in the Congo basin
+    """
 
     df = (get_forest_area()
           .pipe(utils.filter_countries)
@@ -170,10 +179,15 @@ def forest_congo():
 
     df.to_csv(f'{config.paths.output}/forest_area.csv', index=False)
 
-def minerals():
-    """ """
+def transition_minerals(minerals: tuple = ('Cobalt', 'Copper', 'Chromium (Cr2O3)', 'Manganese', 'Platinum',
+                                          'Aluminium', 'Lithium (Li2O)')) -> None:
+    """Create transition minerals chart
 
-    df = get_minerals()
+    Args:
+        minerals (tuple): list of transition minerals to use
+    """
+
+    df = get_minerals(minerals)
     df.country = df.country.replace({'Congo, D.R.': 'Congo, Dem. Rep.'})
     df['iso_code'] = coco.convert(df.country)
     df['continent'] = coco.convert(df.iso_code, to='continent')
@@ -181,15 +195,15 @@ def minerals():
     df.to_csv(f'{config.paths.output}/minerals.csv', index=False)
 
 
-def temperature():
-    """ """
+def temperature() -> None:
+    """Create temperature chart"""
 
     get_global_temp().to_csv(f'{config.paths.output}/temperature_anomaly.csv', index=False)
 
 
 
 def update_charts():
-    """ """
+    """Pipeline to update all charts"""
 
     temperature()
     climate_events()
@@ -198,10 +212,10 @@ def update_charts():
     sahel_population()
     electricity_cooking()
     renewable()
-    minerals()
+    transition_minerals()
     forest_congo()
 
-    print('successfully update charts')
+    print('successfully updated charts')
 
 
 

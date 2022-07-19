@@ -8,8 +8,16 @@ import numpy as np
 import statsmodels.api as sm
 
 
-def get_owid(url: str, indicators: Optional[list] = None):
-    """read data from OWID into a dataframe"""
+def get_owid(url: str, indicators: Optional[list] = None) -> pd.DataFrame:
+    """read data from OWID into a dataframe
+
+    Args:
+        url (str): url to csv file
+        indicators (list): list of indicators to extract
+
+    Returns:
+        pd.DataFrame
+    """
 
     try:
         df = pd.read_csv(url)
@@ -28,7 +36,14 @@ def get_owid(url: str, indicators: Optional[list] = None):
 
 
 def _clean_emdat(df: pd.DataFrame, start_year=2000) -> pd.DataFrame:
-    """Cleaning function for EMDAT"""
+    """Cleaning function for EMDAT
+
+    Args:
+        df (pd.DataFrame): pandas dataframe to clean
+        start year (int): starting year. Default = 2000
+
+    Returns pd.DataFrame
+    """
 
     columns = {'Year': 'year', 'Disaster Type': 'disaster_type', 'ISO': 'iso_code', 'Total Affected': 'total_affected'}
 
@@ -47,7 +62,14 @@ def _clean_emdat(df: pd.DataFrame, start_year=2000) -> pd.DataFrame:
 
 
 def get_emdat(*, start_year: Optional[int] = 2000) -> pd.DataFrame:
-    """ """
+    """extract and clean emdat data
+
+    Args:
+        start_year (int): Starting year. Default = 2000
+
+    Returns:
+        pd.DataFrame
+    """
 
     df = pd.read_excel(f'{config.paths.raw_data}/emdat.xlsx', skiprows=6)
     df = _clean_emdat(df, start_year)
@@ -56,15 +78,32 @@ def get_emdat(*, start_year: Optional[int] = 2000) -> pd.DataFrame:
 
 
 def _clean_ndgain(df: pd.DataFrame, index_name: str) -> pd.DataFrame:
-    """returns a clean dataframe with latest year data"""
+    """returns a clean dataframe with latest year data"
+
+    Args:
+        df (pd.DataFrame): pandas dataframe to clean
+        index_name (str): name of index column
+
+    Returns:
+        pd.DataFrame
+    """
 
     latest_year = df.columns[-1]
     return (df[['ISO3', latest_year]]
             .rename(columns={'ISO3': 'iso_code', latest_year: index_name}))
 
 
-def read_ndgain_index(folder: ZipFile, index: str, path: str):
-    """parse folder structure and read csv for an indicator"""
+def read_ndgain_index(folder: ZipFile, index: str, path: str) -> pd.DataFrame:
+    """parse folder structure and read csv for an indicator
+
+    Args:
+        folder (ZiplFile): zipped folder object
+        index (str): index file name
+        path (str): path to file
+
+    Returns:
+        pd.DataFrame
+    """
 
     if f'{path}{index}.csv' not in list(folder.NameToInfo.keys()):
         raise ValueError(f"Invalid path for {index}: {path}{index}")
@@ -74,8 +113,12 @@ def read_ndgain_index(folder: ZipFile, index: str, path: str):
     return df
 
 
-def get_ndgain_data():
-    """pipeline to extract all relevant nd-gain data"""
+def get_ndgain_data() -> pd.DataFrame:
+    """pipeline to extract all relevant nd-gain data
+
+    Returns:
+        pd.DataFrame
+    """
 
     folder = utils.unzip_folder(config.urls.ND_GAIN)
 
@@ -101,11 +144,13 @@ def get_ndgain_data():
 
 
 def get_global_temp(lowess_frac: float = 0.25) -> pd.DataFrame:
-    """Data from NASA GISS: https://data.giss.nasa.gov/gistemp/
+    """Extract temperature data from NASA GISS: https://data.giss.nasa.gov/gistemp/
 
-    frac: float
-        fraction of data used when estimating y values, between 0-1
+    Args:
+        lowess_frac (float): fraction of data used when estimating y values, between 0-1
 
+    Returns:
+        pd.DataFrame
     """
 
     try:
@@ -124,8 +169,15 @@ def get_global_temp(lowess_frac: float = 0.25) -> pd.DataFrame:
                                            return_sorted=False, frac=lowess_frac)
     return df
 
-def get_population(variant: str = 'Medium'):
-    """ """
+def get_population(variant: str = 'Medium') -> pd.DataFrame:
+    """Extract population data from UN World Population Prospects
+
+    Args:
+        variant (str): variant level. Default = Medium
+
+    Returns:
+        pd.DataFrame
+    """
 
     rename_countries = {'China, Hong Kong SAR': 'Hong Kong',
                         'China, Taiwan Province of China':'Taiwan',
@@ -148,8 +200,12 @@ def get_population(variant: str = 'Medium'):
 
 
 
-def get_forest_area():
-    """ """
+def get_forest_area() -> pd.DataFrame:
+    """Extract forest area data from WDI
+
+    Returns:
+        pd.DataFrame
+    """
 
     df =  (utils.get_wb_indicator('AG.LND.FRST.ZS')
             .pipe(utils.get_latest, by=['iso_code', 'country_name'], date_col = 'year')
@@ -158,19 +214,25 @@ def get_forest_area():
     return df
 
 
-def get_minerals():
-    """ """
+def get_minerals(minerals: tuple) -> pd.DataFrame:
+    """Extract data from world mining data
 
-    #url = 'https://www.world-mining-data.info/wmd/downloads/XLS/6.5.%20Share_of_World_Mineral_Production_2020_by_Countries.xlsx'
+    Args:
+        minerals (tuple): minerals to extract
+
+    Returns:
+        pd.DataFrame
+    """
+
     columns = {'Country': 'country', 'unit':'unit', 'Production 2020':'prod_2020', 'Share in %':'share_pct'}
-    mineral_type = ['Cobalt', 'Copper', 'Chromium (Cr2O3)', 'Manganese', 'Platinum', 'Aluminium', 'Lithium (Li2O)']
 
     df = pd.DataFrame()
-    for m in mineral_type:
+    for m in minerals:
         mineral_df = pd.read_excel(config.urls.MINERALS, sheet_name=m, skiprows=1)
         mineral_df = mineral_df.rename(columns = columns).loc[:, list(columns.values())].assign(mineral = m)
 
         df = pd.concat([df, mineral_df])
 
     df = df[df.country != 'Total']
+
     return df
