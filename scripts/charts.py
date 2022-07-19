@@ -218,6 +218,11 @@ def update_charts():
     print('successfully updated charts')
 
 
+if __name__ == "__main__":
+
+    update_charts()
+
+
 
 
 
