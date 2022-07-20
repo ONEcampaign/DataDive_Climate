@@ -22,7 +22,7 @@ jobs:
           pip install -r requirements.txt
       - name: Execute Update Script
         run:
-          python charts.py
+          python update.py
       - name: save-changes
         run:  |
           git config --local user.email "action@github.com"
