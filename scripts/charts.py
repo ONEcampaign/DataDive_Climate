@@ -289,8 +289,3 @@ def update_charts():
     forest_congo()
 
     print("successfully updated charts")
-
-
-if __name__ == "__main__":
-
-    update_charts()
