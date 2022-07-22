@@ -1,9 +1,9 @@
-pandas~=1.4.1
-weo~=0.7.0
-wbgapi~=1.0.7
-requests~=2.27.1
-numpy~=1.21.5
-statsmodels~=0.13.2
+pandas>=1.4.1
+weo>=.7.0
+wbgapi>=1.0.7
+requests>=2.27.1
+numpy>=1.21.5
+statsmodels>=0.13.2
 country_converter
 camelot
-xlrd>=2.0.1
+xlrd
