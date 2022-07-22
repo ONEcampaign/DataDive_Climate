@@ -6,4 +6,4 @@ numpy~=1.21.5
 statsmodels~=0.13.2
 country_converter
 camelot
-xlrd
+xlrd>=2.0.1
