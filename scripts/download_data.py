@@ -167,7 +167,7 @@ def get_ndgain_data() -> pd.DataFrame:
 
 
 def get_global_temp(lowess_frac: float = 0.25) -> pd.DataFrame:
-    """Extract temperature data from NASA GISS: https://data.giss.nasa.gov/gistemp/
+    """Extract temperature data from MET https://climate.metoffice.cloud/temperature.html#datasets
 
     Args:
         lowess_frac (float): fraction of data used when estimating y values, between 0-1
@@ -177,22 +177,16 @@ def get_global_temp(lowess_frac: float = 0.25) -> pd.DataFrame:
     """
 
     try:
-        df = pd.read_csv(config.urls.TEMPERATURE, skiprows=1)
+        df = pd.read_csv(config.urls.TEMPERATURE)
     except ConnectionError:
-        raise ConnectionError("Could not read NASA GISS data")
+        raise ConnectionError("Could not read data")
 
-    df = (
-        df.rename(columns={"Year": "year", "J-D": "temp_anomaly"})[
-            ["year", "temp_anomaly"]
-        ]
-        .replace("***", np.nan)
-        .assign(temp_anomaly=lambda d: pd.to_numeric(d.temp_anomaly))
-        .dropna(subset="temp_anomaly")
-    )
+    df = (df.loc[:, ['Year', 'HadCRUT5 (degC)']]
+          .rename(columns = {'Year':'year', 'HadCRUT5 (degC)':'temp_change'}))
 
     # apply lowess smoothing
     df["lowess"] = sm.nonparametric.lowess(
-        df.temp_anomaly, df.year, return_sorted=False, frac=lowess_frac
+        df.temp_change, df.year, return_sorted=False, frac=lowess_frac
     )
     return df
 
