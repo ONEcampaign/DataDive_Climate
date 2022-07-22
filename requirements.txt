@@ -5,5 +5,5 @@ requests>=2.27.1
 numpy>=1.21.5
 statsmodels>=0.13.2
 country_converter
-camelot
+camelot-py
 xlrd
