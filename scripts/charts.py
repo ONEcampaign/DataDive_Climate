@@ -271,7 +271,7 @@ def temperature() -> None:
     """Create temperature chart"""
 
     get_global_temp().to_csv(
-        f"{config.paths.output}/temperature_anomaly.csv", index=False
+        f"{config.paths.output}/temperature_change.csv", index=False
     )
 
 
