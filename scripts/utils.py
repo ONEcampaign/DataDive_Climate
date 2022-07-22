@@ -156,12 +156,16 @@ def _download_wb_data(code: str, database: int = 2) -> pd.DataFrame:
 
     try:
         df = wb.data.DataFrame(
-            series=code, db=database, numericTimeKeys=True, labels=True
+            series=code,
+            db=database,
+            numericTimeKeys=True,
+            labels=True,
+            mrnev=1,
         )
         return df
 
     except:
-        raise Exception(f"Could not retieve {code} indicator from World Bank")
+        raise Exception(f"Could not retrieve {code} indicator from World Bank")
 
 
 def _melt_wb_data(df: pd.DataFrame) -> pd.DataFrame:
