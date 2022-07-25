@@ -16,11 +16,11 @@ httpcore==0.14.7
 httpx
 iso3166==2.1.1
 numexpr
-numpy
+numpy~=1.21.5
 opencv-python==4.6.0.66
 openpyxl==3.0.10
 packaging
-pandas
+pandas~=1.4.3
 patsy==0.5.2
 pdfminer.six==20220524
 pycparser
@@ -31,7 +31,7 @@ PySocks
 python-dateutil
 pytz
 PyYAML==6.0
-requests
+requests~=2.27.1
 rfc3986==1.5.0
 scipy
 six
@@ -40,6 +40,7 @@ statsmodels==0.13.2
 tabulate==0.8.10
 urllib3
 wbgapi==1.0.12
-weo
+weo~=0.7.3
 win-inet-pton
 wincertstore==0.2
+bblocks~=0.1.2
