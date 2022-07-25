@@ -1,7 +1,7 @@
 name: Update Charts
 'on':
   schedule:
-    - cron: '0 10 * * *'
+    - cron: '0 10 * * 1'
   workflow_dispatch:
 env:
   IPC_WEB_API: ${{ secrets.IPC_WEB_API }}
