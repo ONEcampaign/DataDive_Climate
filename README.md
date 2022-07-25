@@ -5,14 +5,15 @@ to reproduce the climate analysis for the
 [Climate Data Dive page](https://www.one.org/africa/issues/covid-19-tracker/explore-climate-change/).
 
 Maintainers:
-- [Luca Picci](https://github.com/lpicci96/)
+- [lpicci96](https://github.com/lpicci96/)
+- [jm-rivera](https://github.com/jm-rivera)
 
 ### Sources:
 
 - Our World in Data
 - World Bank, World Development Indicators (WDI)
 - IMF, World Economic Outlook (WEO)
-- NASA Goddard Institute for Space Studies (GISS)
+- Met Office Hadley Centre/Climatic Research Unit (HADCRUT5)
 - Centre for Research on the Epidemiology of Disasters (CRED)
 - Notre Dame Global Adaptation Initiative (ND-GAIN)
 - UN World Population Prospects
