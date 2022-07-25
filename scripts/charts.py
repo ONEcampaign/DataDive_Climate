@@ -168,7 +168,15 @@ def electricity_cooking() -> None:
           .pipe(utils.keep_countries)
           )
 
-    df.to_csv(f"{config.paths.output}/electricity_cooking.csv", index=False)
+    # clean values
+    df = (df
+          .assign(electricity = lambda d: round(d.electricity, 2))
+          .assign(electricity = lambda d: round(d.electricity, 2))
+          .assign(population_annotation = lambda d: round(d.population/1e6, 2))
+          )
+
+    return df
+    #df.to_csv(f"{config.paths.output}/electricity_cooking.csv", index=False)
 
 
 def renewable() -> None:
