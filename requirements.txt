@@ -13,7 +13,7 @@ cryptography
 et-xmlfile==1.1.0
 h11==0.12.0
 httpcore==0.14.7
-httpx==0.23.0
+httpx~=0.23.0
 iso3166==2.1.1
 numexpr
 numpy
