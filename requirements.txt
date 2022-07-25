@@ -13,7 +13,7 @@ cryptography
 et-xmlfile==1.1.0
 h11==0.12.0
 httpcore==0.14.7
-httpx~=0.23.0
+httpx
 iso3166==2.1.1
 numexpr
 numpy
@@ -40,6 +40,6 @@ statsmodels==0.13.2
 tabulate==0.8.10
 urllib3
 wbgapi==1.0.12
-weo==0.7.3
+weo
 win-inet-pton
 wincertstore==0.2
