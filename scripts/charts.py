@@ -173,6 +173,7 @@ def electricity_cooking() -> None:
           .assign(electricity = lambda d: round(d.electricity, 2))
           .assign(electricity = lambda d: round(d.electricity, 2))
           .assign(population_annotation = lambda d: round(d.population/1e6, 2))
+          .assign(gdp_per_capita = lambda d: round(d.gdp_per_capita, 2))
           )
 
     df.to_csv(f"{config.paths.output}/electricity_cooking.csv", index=False)
