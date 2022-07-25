@@ -2,6 +2,7 @@
 
 import numpy as np
 import pandas as pd
+from bblocks.import_tools import world_bank
 import country_converter as coco
 from scripts import utils, config
 from scripts.config import urls
@@ -150,29 +151,24 @@ def climate_events(start_year=2020) -> None:
 def electricity_cooking() -> None:
     """Create scatter plot chart for access to electricity and clean cooking fuel"""
 
-    elec = utils.get_wb_indicator("EG.ELC.ACCS.ZS").rename(
-        columns={"value": "electricity"}
-    )
-    cooking = utils.get_wb_indicator("EG.CFT.ACCS.ZS").rename(
-        columns={"value": "cooking"}
-    )
+    df = (world_bank
+          .WorldBankData()
+          .load_indicator('EG.ELC.ACCS.ZS', most_recent_only=True)
+          .load_indicator('EG.CFT.ACCS.ZS', most_recent_only=True)
+          .get_data()
+          )
 
-    df = pd.merge(elec, cooking, on=["iso_code", "country_name", "year"], how="inner")
+    df = (df.pivot(index=['iso_code'], columns = 'indicator', values='value')
+          .reset_index()
+          .rename(columns = {'EG.ELC.ACCS.ZS':'electricity', 'EG.CFT.ACCS.ZS': 'cooking'})
+          .assign(country_name = lambda d: coco.convert(d.iso_code, to='name_short'))
+          .assign(continent = lambda d: coco.convert(d.iso_code, to = 'continent'))
+          .pipe(utils.add_gdp_latest, per_capita=True)
+          .pipe(utils.add_pop_latest)
+          .pipe(utils.keep_countries)
+          )
 
-    (
-        df.pipe(utils.get_latest, by="iso_code", date_col="year")
-        .pipe(utils.get_latest, by=["iso_code", "country_name"], date_col="year")
-        .dropna(subset=["electricity", "cooking"])
-        .pipe(utils.add_gdp_latest, per_capita=True)
-        .pipe(utils.add_pop_latest)
-        .pipe(utils.keep_countries)
-        .assign(continent=lambda d: coco.convert(d.iso_code, to="continent"))
-        .assign(pop_annotation=lambda d: round(d.population / 1e6, 2))
-        .assign(electricity=lambda d: round(d.electricity, 2))
-        .assign(cooking=lambda d: round(d.cooking, 2))
-        .assign(gdp_per_capita=lambda d: round(d.gdp_per_capita, 2))
-        .to_csv(f"{config.paths.output}/electricity_cooking.csv", index=False)
-    )
+    df.to_csv(f"{config.paths.output}/electricity_cooking.csv", index=False)
 
 
 def renewable() -> None:
