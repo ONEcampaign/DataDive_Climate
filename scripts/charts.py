@@ -175,8 +175,7 @@ def electricity_cooking() -> None:
           .assign(population_annotation = lambda d: round(d.population/1e6, 2))
           )
 
-    return df
-    #df.to_csv(f"{config.paths.output}/electricity_cooking.csv", index=False)
+    df.to_csv(f"{config.paths.output}/electricity_cooking.csv", index=False)
 
 
 def renewable() -> None:
