@@ -286,7 +286,7 @@ def update_charts():
     climate_events()
     gain()
     co2_per_capita_continent()
-    sahel_population()
+    # sahel_population()
     electricity_cooking()
     renewable()
     transition_minerals()
