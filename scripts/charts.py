@@ -108,7 +108,7 @@ def climate_events(start_year=2020) -> None:
 
     total_affected = (
         affected.groupby("iso_code", as_index=False)
-        .agg("sum")
+        .agg("sum", numeric_only=True)
         .assign(disaster_type="Total")
     )
     affected = pd.concat([affected, total_affected])
@@ -124,7 +124,7 @@ def climate_events(start_year=2020) -> None:
     )
     total_events = (
         numb_events.groupby("iso_code", as_index=False)
-        .agg("sum")
+        .agg("sum", numeric_only=True)
         .assign(disaster_type="Total")
     )
     numb_events = pd.concat([numb_events, total_events])

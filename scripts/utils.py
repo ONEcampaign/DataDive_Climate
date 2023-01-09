@@ -19,7 +19,7 @@ def unzip_folder(url) -> ZipFile:
     """
 
     try:
-        response = requests.get(url, verify=False, timeout=7)
+        response = requests.get(url)
         folder = ZipFile(io.BytesIO(response.content))
         return folder
     except ConnectionError:
