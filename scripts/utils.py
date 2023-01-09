@@ -19,7 +19,9 @@ def unzip_folder(url) -> ZipFile:
     """
 
     try:
-        response = requests.get(url)
+
+        # requests.get including chrome headers
+        response = requests.get(url, headers={"User-Agent": "Chrome/108.0.5359.124"})
         folder = ZipFile(io.BytesIO(response.content))
         return folder
     except ConnectionError:
