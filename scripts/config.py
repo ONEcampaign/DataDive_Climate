@@ -52,7 +52,7 @@ class Urls:
 
     @property
     def ND_GAIN(self):
-        return "https://gain.nd.edu/assets/437409/resources.zip"
+        return "https://gain.nd.edu/assets/478975/resources.zip"
 
     @property
     def TEMPERATURE(self):
