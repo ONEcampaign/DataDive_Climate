@@ -4,8 +4,6 @@ import pandas as pd
 from typing import Optional
 from scripts import utils, config
 from zipfile import ZipFile
-import numpy as np
-import statsmodels.api as sm
 
 
 def get_owid(url: str, indicators: Optional[list] = None) -> pd.DataFrame:
@@ -166,11 +164,8 @@ def get_ndgain_data() -> pd.DataFrame:
     return df
 
 
-def get_global_temp(lowess_frac: float = 0.25) -> pd.DataFrame:
+def get_global_temp() -> pd.DataFrame:
     """Extract temperature data from MET https://climate.metoffice.cloud/temperature.html#datasets
-
-    Args:
-        lowess_frac (float): fraction of data used when estimating y values, between 0-1
 
     Returns:
         pd.DataFrame
@@ -184,10 +179,6 @@ def get_global_temp(lowess_frac: float = 0.25) -> pd.DataFrame:
     df = (df.loc[:, ['Year', 'HadCRUT5 (degC)']]
           .rename(columns = {'Year':'year', 'HadCRUT5 (degC)':'temp_change'}))
 
-    # apply lowess smoothing
-    df["lowess"] = sm.nonparametric.lowess(
-        df.temp_change, df.year, return_sorted=False, frac=lowess_frac
-    )
     return df
 
 
