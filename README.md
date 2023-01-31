@@ -2,7 +2,7 @@
 
 This repository contains the scripts and data necessary 
 to reproduce the climate analysis for the
-[Climate Data Dive page](https://www.one.org/africa/issues/covid-19-tracker/explore-climate-change/).
+[Climate Data Dive page](https://data.one.org/data-dives/climate/).
 
 Maintainers:
 - [lpicci96](https://github.com/lpicci96/)
